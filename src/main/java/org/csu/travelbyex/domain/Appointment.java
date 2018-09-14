@@ -5,9 +5,13 @@ import java.util.Date;
 public class Appointment {
     private Integer appointmentId;
 
-    private Integer spotId;
-
     private String authorId;
+
+    private String lp;
+
+    private String sp;
+
+    private String spotName;
 
     private Date time;
 
@@ -25,10 +29,12 @@ public class Appointment {
 
     private String contentEx;
 
-    public Appointment(Integer appointmentId, Integer spotId, String authorId, Date time, String imagePath, Short sum, String title, String tag1, String tag2, String tag3, String contentEx) {
+    public Appointment(Integer appointmentId, String authorId, String lp, String sp, String spotName, Date time, String imagePath, Short sum, String title, String tag1, String tag2, String tag3, String contentEx) {
         this.appointmentId = appointmentId;
-        this.spotId = spotId;
         this.authorId = authorId;
+        this.lp = lp;
+        this.sp = sp;
+        this.spotName = spotName;
         this.time = time;
         this.imagePath = imagePath;
         this.sum = sum;
@@ -51,20 +57,36 @@ public class Appointment {
         this.appointmentId = appointmentId;
     }
 
-    public Integer getSpotId() {
-        return spotId;
-    }
-
-    public void setSpotId(Integer spotId) {
-        this.spotId = spotId;
-    }
-
     public String getAuthorId() {
         return authorId;
     }
 
     public void setAuthorId(String authorId) {
         this.authorId = authorId == null ? null : authorId.trim();
+    }
+
+    public String getLp() {
+        return lp;
+    }
+
+    public void setLp(String lp) {
+        this.lp = lp == null ? null : lp.trim();
+    }
+
+    public String getSp() {
+        return sp;
+    }
+
+    public void setSp(String sp) {
+        this.sp = sp == null ? null : sp.trim();
+    }
+
+    public String getSpotName() {
+        return spotName;
+    }
+
+    public void setSpotName(String spotName) {
+        this.spotName = spotName == null ? null : spotName.trim();
     }
 
     public Date getTime() {

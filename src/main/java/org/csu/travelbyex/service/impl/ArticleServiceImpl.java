@@ -8,6 +8,7 @@ import org.csu.travelbyex.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,16 +64,20 @@ public class ArticleServiceImpl implements ArticleService{
     @Override
     public List getArticlesByTag(String tag){
 
+        List<Article> articles = new ArrayList<>();
+
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
         criteria.andTag1EqualTo(tag);
-        List articles = articleMapper.selectByExampleWithBLOBs(articleExample);
+        articles.addAll( articleMapper.selectByExampleWithBLOBs(articleExample) );
 
-        criteria.andTag1IsNotNull();
+        articleExample = new ArticleExample();
+        criteria = articleExample.createCriteria();
         criteria.andTag2EqualTo(tag);
         articles.addAll( articleMapper.selectByExampleWithBLOBs(articleExample) );
 
-        criteria.andTag2IsNotNull();
+        articleExample = new ArticleExample();
+        criteria = articleExample.createCriteria();
         criteria.andTag3EqualTo(tag);
         articles.addAll( articleMapper.selectByExampleWithBLOBs(articleExample) );
 

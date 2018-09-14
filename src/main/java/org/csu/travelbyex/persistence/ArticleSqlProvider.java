@@ -62,11 +62,11 @@ public class ArticleSqlProvider {
         }
         
         if (record.getLp() != null) {
-            VALUES("LP", "#{lp,jdbcType=CHAR}");
+            VALUES("LP", "#{lp,jdbcType=VARCHAR}");
         }
         
         if (record.getSp() != null) {
-            VALUES("SP", "#{sp,jdbcType=CHAR}");
+            VALUES("SP", "#{sp,jdbcType=VARCHAR}");
         }
         
         if (record.getSpotName() != null) {
@@ -139,7 +139,6 @@ public class ArticleSqlProvider {
         SELECT("tag1");
         SELECT("tag2");
         SELECT("tag3");
-        SELECT("content_ex");
         FROM("article");
         applyWhere(example, false);
         
@@ -182,11 +181,11 @@ public class ArticleSqlProvider {
         }
         
         if (record.getLp() != null) {
-            SET("LP = #{record.lp,jdbcType=CHAR}");
+            SET("LP = #{record.lp,jdbcType=VARCHAR}");
         }
         
         if (record.getSp() != null) {
-            SET("SP = #{record.sp,jdbcType=CHAR}");
+            SET("SP = #{record.sp,jdbcType=VARCHAR}");
         }
         
         if (record.getSpotName() != null) {
@@ -223,8 +222,8 @@ public class ArticleSqlProvider {
         SET("cover_path = #{record.coverPath,jdbcType=VARCHAR}");
         SET("likes = #{record.likes,jdbcType=INTEGER}");
         SET("readers = #{record.readers,jdbcType=INTEGER}");
-        SET("LP = #{record.lp,jdbcType=CHAR}");
-        SET("SP = #{record.sp,jdbcType=CHAR}");
+        SET("LP = #{record.lp,jdbcType=VARCHAR}");
+        SET("SP = #{record.sp,jdbcType=VARCHAR}");
         SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
         SET("tag1 = #{record.tag1,jdbcType=VARCHAR}");
         SET("tag2 = #{record.tag2,jdbcType=VARCHAR}");
@@ -246,13 +245,12 @@ public class ArticleSqlProvider {
         SET("cover_path = #{record.coverPath,jdbcType=VARCHAR}");
         SET("likes = #{record.likes,jdbcType=INTEGER}");
         SET("readers = #{record.readers,jdbcType=INTEGER}");
-        SET("LP = #{record.lp,jdbcType=CHAR}");
-        SET("SP = #{record.sp,jdbcType=CHAR}");
+        SET("LP = #{record.lp,jdbcType=VARCHAR}");
+        SET("SP = #{record.sp,jdbcType=VARCHAR}");
         SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
         SET("tag1 = #{record.tag1,jdbcType=VARCHAR}");
         SET("tag2 = #{record.tag2,jdbcType=VARCHAR}");
         SET("tag3 = #{record.tag3,jdbcType=VARCHAR}");
-        SET("content_ex = #{record.contentEx,jdbcType=LONGVARCHAR}");
         
         ArticleExample example = (ArticleExample) parameter.get("example");
         applyWhere(example, true);
@@ -284,11 +282,11 @@ public class ArticleSqlProvider {
         }
         
         if (record.getLp() != null) {
-            SET("LP = #{lp,jdbcType=CHAR}");
+            SET("LP = #{lp,jdbcType=VARCHAR}");
         }
         
         if (record.getSp() != null) {
-            SET("SP = #{sp,jdbcType=CHAR}");
+            SET("SP = #{sp,jdbcType=VARCHAR}");
         }
         
         if (record.getSpotName() != null) {

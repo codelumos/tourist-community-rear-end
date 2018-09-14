@@ -23,8 +23,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     //约
     @Override
-    public void insertAppointment(Appointment appointment){
+    public int insertAppointment(Appointment appointment){
         appointmentMapper.insert(appointment);
+        return appointment.getAppointmentId();
     }
 
     @Override
@@ -85,10 +86,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List getAppointmentsBySpotId(Integer spotId){
+    public List getAppointmentsBySpotName(String spotName){
         AppointmentExample appointmentExample = new AppointmentExample();
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
-        criteria.andSpotIdEqualTo(spotId);
+        criteria.andSpotNameEqualTo(spotName);
         return appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
     }
 

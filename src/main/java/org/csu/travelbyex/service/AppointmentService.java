@@ -9,7 +9,7 @@ import java.util.List;
 public interface AppointmentService {
 
     //约
-    public void insertAppointment(Appointment appointment);
+    public int insertAppointment(Appointment appointment);
 
     public void deleteAppointment(Integer appointmentId);
 
@@ -21,7 +21,7 @@ public interface AppointmentService {
 
     public List getAppointmentsByAuthorId(String authorId);
 
-    public List getAppointmentsBySpotId(Integer spotId);
+    public List getAppointmentsBySpotName(String spotName);
 
     public void updateAppointmentById(Appointment appointment);
 

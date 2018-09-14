@@ -74,4 +74,9 @@ public class SpotServiceImpl implements SpotService {
         return scenicSpotMapper.selectByExampleWithBLOBs(smallPlaceExample);
     }
 
+    @Override
+    public void insertSpot(ScenicSpot scenicSpot) {
+        scenicSpotMapper.insert(scenicSpot);
+    }
+
 }

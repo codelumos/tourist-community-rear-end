@@ -32,12 +32,14 @@ public interface AppointmentMapper {
     int deleteByPrimaryKey(Integer appointmentId);
 
     @Insert({
-        "insert into appointment (spot_id, author_id, ",
-        "time, image_path, sum, ",
+        "insert into appointment (author_id, lp, ",
+        "sp, spot_name, time, ",
+        "image_path, sum, ",
         "title, tag_1, tag_2, ",
         "tag_3, content_ex)",
-        "values (#{spotId,jdbcType=INTEGER}, #{authorId,jdbcType=VARCHAR}, ",
-        "#{time,jdbcType=DATE}, #{imagePath,jdbcType=VARCHAR}, #{sum,jdbcType=SMALLINT}, ",
+        "values (#{authorId,jdbcType=VARCHAR}, #{lp,jdbcType=VARCHAR}, ",
+        "#{sp,jdbcType=VARCHAR}, #{spotName,jdbcType=VARCHAR}, #{time,jdbcType=DATE}, ",
+        "#{imagePath,jdbcType=VARCHAR}, #{sum,jdbcType=SMALLINT}, ",
         "#{title,jdbcType=VARCHAR}, #{tag1,jdbcType=VARCHAR}, #{tag2,jdbcType=VARCHAR}, ",
         "#{tag3,jdbcType=VARCHAR}, #{contentEx,jdbcType=LONGVARCHAR})"
     })
@@ -51,8 +53,10 @@ public interface AppointmentMapper {
     @SelectProvider(type=AppointmentSqlProvider.class, method="selectByExampleWithBLOBs")
     @ConstructorArgs({
         @Arg(column="appointment_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER, id=true),
-        @Arg(column="spot_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
         @Arg(column="author_id", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="lp", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="sp", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="spot_name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="time", javaType=Date.class, jdbcType=JdbcType.DATE),
         @Arg(column="image_path", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="sum", javaType=Short.class, jdbcType=JdbcType.SMALLINT),
@@ -67,8 +71,10 @@ public interface AppointmentMapper {
     @SelectProvider(type=AppointmentSqlProvider.class, method="selectByExample")
     @ConstructorArgs({
         @Arg(column="appointment_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER, id=true),
-        @Arg(column="spot_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
         @Arg(column="author_id", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="lp", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="sp", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="spot_name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="time", javaType=Date.class, jdbcType=JdbcType.DATE),
         @Arg(column="image_path", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="sum", javaType=Short.class, jdbcType=JdbcType.SMALLINT),
@@ -81,15 +87,17 @@ public interface AppointmentMapper {
 
     @Select({
         "select",
-        "appointment_id, spot_id, author_id, time, image_path, sum, title, tag_1, tag_2, ",
-        "tag_3, content_ex",
+        "appointment_id, author_id, lp, sp, spot_name, time, image_path, sum, title, ",
+        "tag_1, tag_2, tag_3, content_ex",
         "from appointment",
         "where appointment_id = #{appointmentId,jdbcType=INTEGER}"
     })
     @ConstructorArgs({
         @Arg(column="appointment_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER, id=true),
-        @Arg(column="spot_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
         @Arg(column="author_id", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="lp", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="sp", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="spot_name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="time", javaType=Date.class, jdbcType=JdbcType.DATE),
         @Arg(column="image_path", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="sum", javaType=Short.class, jdbcType=JdbcType.SMALLINT),
@@ -115,8 +123,10 @@ public interface AppointmentMapper {
 
     @Update({
         "update appointment",
-        "set spot_id = #{spotId,jdbcType=INTEGER},",
-          "author_id = #{authorId,jdbcType=VARCHAR},",
+        "set author_id = #{authorId,jdbcType=VARCHAR},",
+          "lp = #{lp,jdbcType=VARCHAR},",
+          "sp = #{sp,jdbcType=VARCHAR},",
+          "spot_name = #{spotName,jdbcType=VARCHAR},",
           "time = #{time,jdbcType=DATE},",
           "image_path = #{imagePath,jdbcType=VARCHAR},",
           "sum = #{sum,jdbcType=SMALLINT},",
@@ -131,8 +141,10 @@ public interface AppointmentMapper {
 
     @Update({
         "update appointment",
-        "set spot_id = #{spotId,jdbcType=INTEGER},",
-          "author_id = #{authorId,jdbcType=VARCHAR},",
+        "set author_id = #{authorId,jdbcType=VARCHAR},",
+          "lp = #{lp,jdbcType=VARCHAR},",
+          "sp = #{sp,jdbcType=VARCHAR},",
+          "spot_name = #{spotName,jdbcType=VARCHAR},",
           "time = #{time,jdbcType=DATE},",
           "image_path = #{imagePath,jdbcType=VARCHAR},",
           "sum = #{sum,jdbcType=SMALLINT},",

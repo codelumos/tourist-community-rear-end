@@ -4,10 +4,9 @@ package org.csu.travelbyex.controller;
 import io.swagger.annotations.ApiOperation;
 import org.csu.travelbyex.core.Result;
 import org.csu.travelbyex.core.ResultGenerator;
-import org.csu.travelbyex.domain.Article;
-import org.csu.travelbyex.domain.Comment;
-import org.csu.travelbyex.domain.Reply;
+import org.csu.travelbyex.domain.*;
 import org.csu.travelbyex.service.ArticleService;
+import org.csu.travelbyex.service.SpotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +18,8 @@ public class ArticleController {
 
     @Autowired
     ArticleService articleService;
+    @Autowired
+    SpotService spotService;
 
     @ApiOperation(value = "发布一篇文章", notes = "/")
     @PostMapping("/articles")
@@ -105,6 +106,7 @@ public class ArticleController {
 
     }
 
+
     @ApiOperation(value = "回复评论")
     @PostMapping("/replies")
     public Result insertReply(@RequestBody Reply reply)
@@ -120,6 +122,7 @@ public class ArticleController {
 
 
     }
+
 
     @ApiOperation(value = "根据地点、标签查询文章")
     @GetMapping("/search/articles")
@@ -150,6 +153,5 @@ public class ArticleController {
             return ResultGenerator.fail(articles);
         }
     }
-
 
 }

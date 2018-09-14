@@ -192,66 +192,6 @@ public class AppointmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andSpotIdIsNull() {
-            addCriterion("spot_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdIsNotNull() {
-            addCriterion("spot_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdEqualTo(Integer value) {
-            addCriterion("spot_id =", value, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdNotEqualTo(Integer value) {
-            addCriterion("spot_id <>", value, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdGreaterThan(Integer value) {
-            addCriterion("spot_id >", value, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("spot_id >=", value, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdLessThan(Integer value) {
-            addCriterion("spot_id <", value, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdLessThanOrEqualTo(Integer value) {
-            addCriterion("spot_id <=", value, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdIn(List<Integer> values) {
-            addCriterion("spot_id in", values, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdNotIn(List<Integer> values) {
-            addCriterion("spot_id not in", values, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdBetween(Integer value1, Integer value2) {
-            addCriterion("spot_id between", value1, value2, "spotId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpotIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("spot_id not between", value1, value2, "spotId");
-            return (Criteria) this;
-        }
-
         public Criteria andAuthorIdIsNull() {
             addCriterion("author_id is null");
             return (Criteria) this;
@@ -319,6 +259,216 @@ public class AppointmentExample {
 
         public Criteria andAuthorIdNotBetween(String value1, String value2) {
             addCriterion("author_id not between", value1, value2, "authorId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpIsNull() {
+            addCriterion("lp is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpIsNotNull() {
+            addCriterion("lp is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpEqualTo(String value) {
+            addCriterion("lp =", value, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpNotEqualTo(String value) {
+            addCriterion("lp <>", value, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpGreaterThan(String value) {
+            addCriterion("lp >", value, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpGreaterThanOrEqualTo(String value) {
+            addCriterion("lp >=", value, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpLessThan(String value) {
+            addCriterion("lp <", value, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpLessThanOrEqualTo(String value) {
+            addCriterion("lp <=", value, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpLike(String value) {
+            addCriterion("lp like", value, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpNotLike(String value) {
+            addCriterion("lp not like", value, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpIn(List<String> values) {
+            addCriterion("lp in", values, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpNotIn(List<String> values) {
+            addCriterion("lp not in", values, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpBetween(String value1, String value2) {
+            addCriterion("lp between", value1, value2, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpNotBetween(String value1, String value2) {
+            addCriterion("lp not between", value1, value2, "lp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpIsNull() {
+            addCriterion("sp is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpIsNotNull() {
+            addCriterion("sp is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpEqualTo(String value) {
+            addCriterion("sp =", value, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpNotEqualTo(String value) {
+            addCriterion("sp <>", value, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpGreaterThan(String value) {
+            addCriterion("sp >", value, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpGreaterThanOrEqualTo(String value) {
+            addCriterion("sp >=", value, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpLessThan(String value) {
+            addCriterion("sp <", value, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpLessThanOrEqualTo(String value) {
+            addCriterion("sp <=", value, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpLike(String value) {
+            addCriterion("sp like", value, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpNotLike(String value) {
+            addCriterion("sp not like", value, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpIn(List<String> values) {
+            addCriterion("sp in", values, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpNotIn(List<String> values) {
+            addCriterion("sp not in", values, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpBetween(String value1, String value2) {
+            addCriterion("sp between", value1, value2, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpNotBetween(String value1, String value2) {
+            addCriterion("sp not between", value1, value2, "sp");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameIsNull() {
+            addCriterion("spot_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameIsNotNull() {
+            addCriterion("spot_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameEqualTo(String value) {
+            addCriterion("spot_name =", value, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameNotEqualTo(String value) {
+            addCriterion("spot_name <>", value, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameGreaterThan(String value) {
+            addCriterion("spot_name >", value, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameGreaterThanOrEqualTo(String value) {
+            addCriterion("spot_name >=", value, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameLessThan(String value) {
+            addCriterion("spot_name <", value, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameLessThanOrEqualTo(String value) {
+            addCriterion("spot_name <=", value, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameLike(String value) {
+            addCriterion("spot_name like", value, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameNotLike(String value) {
+            addCriterion("spot_name not like", value, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameIn(List<String> values) {
+            addCriterion("spot_name in", values, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameNotIn(List<String> values) {
+            addCriterion("spot_name not in", values, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameBetween(String value1, String value2) {
+            addCriterion("spot_name between", value1, value2, "spotName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotNameNotBetween(String value1, String value2) {
+            addCriterion("spot_name not between", value1, value2, "spotName");
             return (Criteria) this;
         }
 

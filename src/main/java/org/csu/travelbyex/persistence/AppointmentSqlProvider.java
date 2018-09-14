@@ -41,12 +41,20 @@ public class AppointmentSqlProvider {
         BEGIN();
         INSERT_INTO("appointment");
         
-        if (record.getSpotId() != null) {
-            VALUES("spot_id", "#{spotId,jdbcType=INTEGER}");
-        }
-        
         if (record.getAuthorId() != null) {
             VALUES("author_id", "#{authorId,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getLp() != null) {
+            VALUES("lp", "#{lp,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSp() != null) {
+            VALUES("sp", "#{sp,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSpotName() != null) {
+            VALUES("spot_name", "#{spotName,jdbcType=VARCHAR}");
         }
         
         if (record.getTime() != null) {
@@ -91,8 +99,10 @@ public class AppointmentSqlProvider {
         } else {
             SELECT("appointment_id");
         }
-        SELECT("spot_id");
         SELECT("author_id");
+        SELECT("lp");
+        SELECT("sp");
+        SELECT("spot_name");
         SELECT("time");
         SELECT("image_path");
         SELECT("sum");
@@ -118,8 +128,10 @@ public class AppointmentSqlProvider {
         } else {
             SELECT("appointment_id");
         }
-        SELECT("spot_id");
         SELECT("author_id");
+        SELECT("lp");
+        SELECT("sp");
+        SELECT("spot_name");
         SELECT("time");
         SELECT("image_path");
         SELECT("sum");
@@ -148,12 +160,20 @@ public class AppointmentSqlProvider {
             SET("appointment_id = #{record.appointmentId,jdbcType=INTEGER}");
         }
         
-        if (record.getSpotId() != null) {
-            SET("spot_id = #{record.spotId,jdbcType=INTEGER}");
-        }
-        
         if (record.getAuthorId() != null) {
             SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getLp() != null) {
+            SET("lp = #{record.lp,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSp() != null) {
+            SET("sp = #{record.sp,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSpotName() != null) {
+            SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
         }
         
         if (record.getTime() != null) {
@@ -197,8 +217,10 @@ public class AppointmentSqlProvider {
         UPDATE("appointment");
         
         SET("appointment_id = #{record.appointmentId,jdbcType=INTEGER}");
-        SET("spot_id = #{record.spotId,jdbcType=INTEGER}");
         SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
+        SET("lp = #{record.lp,jdbcType=VARCHAR}");
+        SET("sp = #{record.sp,jdbcType=VARCHAR}");
+        SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
         SET("time = #{record.time,jdbcType=DATE}");
         SET("image_path = #{record.imagePath,jdbcType=VARCHAR}");
         SET("sum = #{record.sum,jdbcType=SMALLINT}");
@@ -218,8 +240,10 @@ public class AppointmentSqlProvider {
         UPDATE("appointment");
         
         SET("appointment_id = #{record.appointmentId,jdbcType=INTEGER}");
-        SET("spot_id = #{record.spotId,jdbcType=INTEGER}");
         SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
+        SET("lp = #{record.lp,jdbcType=VARCHAR}");
+        SET("sp = #{record.sp,jdbcType=VARCHAR}");
+        SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
         SET("time = #{record.time,jdbcType=DATE}");
         SET("image_path = #{record.imagePath,jdbcType=VARCHAR}");
         SET("sum = #{record.sum,jdbcType=SMALLINT}");
@@ -237,12 +261,20 @@ public class AppointmentSqlProvider {
         BEGIN();
         UPDATE("appointment");
         
-        if (record.getSpotId() != null) {
-            SET("spot_id = #{spotId,jdbcType=INTEGER}");
-        }
-        
         if (record.getAuthorId() != null) {
             SET("author_id = #{authorId,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getLp() != null) {
+            SET("lp = #{lp,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSp() != null) {
+            SET("sp = #{sp,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSpotName() != null) {
+            SET("spot_name = #{spotName,jdbcType=VARCHAR}");
         }
         
         if (record.getTime() != null) {

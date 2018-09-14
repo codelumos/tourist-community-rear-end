@@ -19,5 +19,6 @@ public interface SpotService {
     //景点
     public ScenicSpot getScenicSpotByName(String spotName);
     public List getScenicSpotsBySPid(Integer spId);
+    public void insertSpot(ScenicSpot scenicSpot);
     
 }
