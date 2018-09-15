@@ -8,6 +8,7 @@ import org.csu.travelbyex.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -58,15 +59,15 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
         criteria.andTimeGreaterThanOrEqualTo(new Date());
         criteria.andTag1Like(tag);
-        List appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        List<Appointment> appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
 
-        appointmentExample = new AppointmentExample();
+        appointmentExample.clear();
         criteria = appointmentExample.createCriteria();
         criteria.andTimeGreaterThanOrEqualTo(new Date());
         criteria.andTag2Like(tag);
         appointments.addAll( appointmentMapper.selectByExampleWithBLOBs(appointmentExample) );
 
-        appointmentExample = new AppointmentExample();
+        appointmentExample.clear();
         criteria = appointmentExample.createCriteria();
         criteria.andTimeGreaterThanOrEqualTo(new Date());
         criteria.andTag3Like(tag);
@@ -152,6 +153,25 @@ public class AppointmentServiceImpl implements AppointmentService {
         Collections.sort(appointments);
         return appointments;
 
+    }
+
+    @Override
+    public List getAppointmentsByParticipantId(String participantId) {
+
+        AppointmentParticipantExample appointmentParticipantExample = new AppointmentParticipantExample();
+        AppointmentParticipantExample.Criteria criteria = appointmentParticipantExample.createCriteria();
+        criteria.andUserIdEqualTo(participantId);
+        List<AppointmentParticipant> appointmentParticipants = appointmentParticipantMapper.selectByExample(appointmentParticipantExample);
+
+        List<Appointment> appointments = new ArrayList<>();
+        for (AppointmentParticipant appointmentParticipant :
+                appointmentParticipants) {
+            Appointment appointment = appointmentMapper.selectByPrimaryKey(appointmentParticipant.getAppointmentId());
+            appointments.add(appointment);
+        }
+
+        Collections.sort(appointments);
+        return appointments;
     }
 
     @Override

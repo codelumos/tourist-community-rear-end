@@ -153,6 +153,7 @@ public class Appointment implements Comparable<Appointment>{
         this.contentEx = contentEx == null ? null : contentEx.trim();
     }
 
+    // 为了使用hashset去重
     @Override
     public boolean equals(Object obj) {
         if (obj == null)
@@ -168,19 +169,21 @@ public class Appointment implements Comparable<Appointment>{
         }
         return false;
     }
-
-    /**
-     * 重写hashcode 方法，返回的hashCode不一样才再去比较每个属性的值
-     */
     @Override
     public int hashCode() {
         return appointmentId.hashCode();
     }
 
 
+    // 为了使用arrayList排序
     @Override
     public int compareTo(Appointment o) {
-        return this.getTime().compareTo(o.getTime());
+        int a = this.getTime().compareTo(o.getTime());
+        // list添加值时如果compareTo返回值为0就不添加了。
+        if (a == 0)
+            return 1;
+        else
+            return this.getTime().compareTo(o.getTime());
     }
 
 }

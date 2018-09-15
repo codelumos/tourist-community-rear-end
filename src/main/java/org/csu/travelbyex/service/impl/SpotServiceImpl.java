@@ -30,6 +30,18 @@ public class SpotServiceImpl implements SpotService {
 
         return list.size() > 0 ? (LargePlace)list.get(0) : null;
     }
+
+
+    @Override
+    public List getLPsByName(String lpName) {
+        LargePlaceExample largePlaceExample = new LargePlaceExample();
+        LargePlaceExample.Criteria criteria = largePlaceExample.createCriteria();
+        criteria.andLpNameLike(lpName);
+        List list = largePlaceMapper.selectByExampleWithBLOBs(largePlaceExample);
+        return list;
+    }
+
+
     @Override
     public List getLPs(Boolean inHome){
         LargePlaceExample largePlaceExample = new LargePlaceExample();
@@ -56,6 +68,19 @@ public class SpotServiceImpl implements SpotService {
         return smallPlaceMapper.selectByExampleWithBLOBs(smallPlaceExample);
     }
 
+    @Override
+    public List getSmallPlacesByLpNameAndSpName(String lpName, String spName) {
+
+        LargePlace largePlace = getLPByName(lpName);
+        SmallPlaceExample smallPlaceExample = new SmallPlaceExample();
+        SmallPlaceExample.Criteria criteria = smallPlaceExample.createCriteria();
+        criteria.andLpIdEqualTo(largePlace.getLpId());
+        criteria.andSpNameLike(spName);
+        return smallPlaceMapper.selectByExampleWithBLOBs(smallPlaceExample);
+
+    }
+
+
     //景点
     @Override
     public ScenicSpot getScenicSpotByName(String spotName){
@@ -77,6 +102,18 @@ public class SpotServiceImpl implements SpotService {
     @Override
     public void insertSpot(ScenicSpot scenicSpot) {
         scenicSpotMapper.insert(scenicSpot);
+    }
+
+    @Override
+    public List getSpotsBySpNameAndSpotName(String spName, String spotName) {
+
+        SmallPlace smallPlace = getSPByName(spName);
+        ScenicSpotExample scenicSpotExample = new ScenicSpotExample();
+        ScenicSpotExample.Criteria criteria = scenicSpotExample.createCriteria();
+        criteria.andPlaceIdEqualTo(smallPlace.getSpId());
+        criteria.andSpotNameLike(spotName);
+        return scenicSpotMapper.selectByExampleWithBLOBs(scenicSpotExample);
+
     }
 
 }

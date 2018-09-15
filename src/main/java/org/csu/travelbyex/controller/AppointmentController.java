@@ -4,13 +4,11 @@ import io.swagger.annotations.ApiOperation;
 import org.csu.travelbyex.core.AppointmentParticipantUp;
 import org.csu.travelbyex.core.Result;
 import org.csu.travelbyex.core.ResultGenerator;
-import org.csu.travelbyex.domain.Appointment;
-import org.csu.travelbyex.domain.AppointmentParticipant;
-import org.csu.travelbyex.domain.AppointmentReply;
-import org.csu.travelbyex.domain.ScenicSpot;
+import org.csu.travelbyex.domain.*;
 import org.csu.travelbyex.service.AccountService;
 import org.csu.travelbyex.service.AppointmentService;
 import org.csu.travelbyex.service.SpotService;
+import org.csu.travelbyex.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,37 +24,35 @@ public class AppointmentController {
     AccountService accountService;
     @Autowired
     SpotService spotService;
+    @Autowired
+    TagService tagService;
 
 
-    @ApiOperation(value = "发布拼途", notes = "景点从数据库选")
+    @ApiOperation(value = "发布拼途")
     @PostMapping("/appointments")
     public Result insertAppointment(@RequestBody Appointment appointment)
     {
         try
         {
             // 如果输入的景点名不在数据库中，就插入数据库。
-            String spotName = appointment.getSpotName();
-            ScenicSpot scenicSpot = spotService.getScenicSpotByName(spotName);
-            if (scenicSpot == null)
-            {
-                scenicSpot = new ScenicSpot();
-                scenicSpot.setPlaceId(1);
-                scenicSpot.setSpotName(spotName);
-                spotService.insertSpot(scenicSpot);
-            }
+            ensureSpotExists(appointment);
 
-            // 拼途参与人员列表加入拼途作者
+            // 如果输入的标签不在数据库中，就插入数据库；
+            ensureTagExists(appointment);
+
+            // 返回拼途的主键，用于查询具体的拼途
+            int appointmentId = appointmentService.insertAppointment(appointment);
+
+            // 在拼途参与人员列表中加入拼途作者
             AppointmentParticipant appointmentParticipant = new AppointmentParticipant();
             appointmentParticipant.setUserId(appointment.getAuthorId());
             appointmentParticipant.setAppointmentId(appointment.getAppointmentId());
             appointmentService.insertAppointmentParticipant(appointmentParticipant);
 
-            // 返回拼途的主键，用于查询具体的拼途
-            int appointmentId = appointmentService.insertAppointment(appointment);
             return ResultGenerator.success(appointmentId);
         }catch (Exception e)
         {
-            return ResultGenerator.fail("发布失败");
+            return ResultGenerator.fail("发布拼途失败！");
         }
     }
 
@@ -67,6 +63,12 @@ public class AppointmentController {
     {
         try
         {
+            // 如果输入的景点名不在数据库中，就插入数据库。
+            ensureSpotExists(appointment);
+
+            // 如果输入的标签不在数据库中，就插入数据库；
+            ensureTagExists(appointment);
+
             appointmentService.updateAppointmentById(appointment);
             return ResultGenerator.success("修改成功");
         } catch (Exception e)
@@ -77,7 +79,7 @@ public class AppointmentController {
     }
 
 
-    @ApiOperation(value = "根据appointmentId查询拼途", notes = "不存在status为0，存在为1")
+    @ApiOperation(value = "根据appointmentId查询拼途")
     @GetMapping("/appointments")
     public Result getAppointment(@RequestParam (value = "appointmentId") Integer appointmentId)
     {
@@ -86,7 +88,7 @@ public class AppointmentController {
             return ResultGenerator.success("拼途不存在");
 
         List<AppointmentReply> appointmentReplies = appointmentService.getAppointmentRepliesByAppointmentId(appointmentId);
-        // 按照时间升序排列
+        // 回复按照时间升序排列
         Collections.sort(appointmentReplies);
         List<AppointmentParticipant> appointmentParticipants = appointmentService.getAppointmentParticipantsByAppointmentId(appointmentId);
         List<AppointmentParticipantUp> appointmentParticipantUps = new ArrayList<>();
@@ -128,7 +130,7 @@ public class AppointmentController {
     }
 
 
-    @ApiOperation(value = "返回全部拼途", notes = "拼途存在为1")
+    @ApiOperation(value = "返回全部拼途")
     @GetMapping("/appointmentsAll")
     public Result getAllAppointments()
     {
@@ -192,7 +194,7 @@ public class AppointmentController {
     }
 
 
-    @ApiOperation(value = "根据userId搜索拼途", notes = "不存在status为0，存在为1")
+    @ApiOperation(value = "查询我创建的拼途")
     @GetMapping("/appointmentsByAuthor")
     public Result getAppointment(@RequestParam(value = "authorId") String authorId)
     {
@@ -204,7 +206,7 @@ public class AppointmentController {
     }
 
 
-    @ApiOperation(value = "根据keyword查询拼途", notes = "不存在status为0，存在为1")
+    @ApiOperation(value = "根据keyword查询拼途")
     @GetMapping("/appointmentsByKeyword")
     public Result getAppointmentsByKeyword(@RequestParam(value = "keyword") String keyword)
     {
@@ -237,11 +239,11 @@ public class AppointmentController {
     }
 
 
-    @ApiOperation(value = "根据地点名查询拼途", notes = "不存在status为0，存在为1")
+    @ApiOperation(value = "根据地点名查询拼途")
     @GetMapping("/appointmentsByPlaceName")
     public Result getAppointmentsByPlace(@RequestParam(value = "placeName") String placeName)
     {
-        Set<Appointment> appointments = new TreeSet<>();
+        Set<Appointment> appointments = new HashSet<>();
 
         placeName = "%" + placeName +"%";
         List<Appointment> appointments1 = appointmentService.getAppointmentByLPName(placeName);
@@ -252,11 +254,14 @@ public class AppointmentController {
         if (appointments1 != null) appointments.addAll(appointments1);
 
         if (appointments.size() == 0) return ResultGenerator.success("无此类拼途！");
-        return ResultGenerator.fail(appointments);
+        appointments1.clear();
+        appointments1.addAll(appointments);
+        Collections.sort(appointments1);
+        return ResultGenerator.fail(appointments1);
     }
 
 
-    @ApiOperation(value = "根据标签查询拼途", notes = "不存在status为0，存在为1")
+    @ApiOperation(value = "根据标签查询拼途")
     @GetMapping("/appointmentsByTag")
     public Result getAppointmentsByTag(@RequestParam(value = "tag") String tag)
     {
@@ -268,7 +273,7 @@ public class AppointmentController {
     }
 
 
-    @ApiOperation(value = "根据日期查询拼途", notes = "目前根据月份查询，输入本年月份即可(int)")
+    @ApiOperation(value = "根据日期查询拼途", notes = "目前是根据月份查询本年拼途，输入本年月份即可(int)")
     @GetMapping("/appointmentsByTime")
     public Result getAppointmentsByTime(@RequestParam(value = "time") Integer time)
     {
@@ -294,12 +299,17 @@ public class AppointmentController {
         return ResultGenerator.fail(appointments);
     }
 
-    // 转换浏览器传来的值
-    private void downAppointmentParticipantUp(AppointmentParticipant appointmentParticipant, AppointmentParticipantUp appointmentParticipantUp)
+
+    @ApiOperation(value = "查询我参与的拼途")
+    @GetMapping("/appointmentsByParticipantId")
+    public Result getAppointmentsByParticipantId(@RequestParam(value = "participantId") String participantId)
     {
-        appointmentParticipant.setAppointmentId(appointmentParticipantUp.getAppointmentId());
-        appointmentParticipant.setUserId(appointmentParticipantUp.getUserId());
+        List<Appointment> appointments = appointmentService.getAppointmentsByParticipantId(participantId);
+        if (appointments.size() == 0)
+            return ResultGenerator.success("你暂未参与拼途！");
+        return ResultGenerator.fail(appointments);
     }
+
 
     // 转换数据库中查出的值
     private void upAppointmentParticipantUp(AppointmentParticipant appointmentParticipant, AppointmentParticipantUp appointmentParticipantUp)
@@ -309,4 +319,30 @@ public class AppointmentController {
         String appointmentImagePath = accountService.getAccountInfoByUserId(appointmentParticipant.getUserId()).getImagePath();
         appointmentParticipantUp.setAppointmentImagePath(appointmentImagePath);
     }
+
+    // 如果数据库中没有用户输入的景点，就插入
+    private void ensureSpotExists(Appointment appointment)
+    {
+        String spotName = appointment.getSpotName();
+        ScenicSpot scenicSpot = spotService.getScenicSpotByName(spotName);
+        if (scenicSpot == null)
+        {
+            scenicSpot = new ScenicSpot();
+            scenicSpot.setPlaceId(1);
+            scenicSpot.setSpotName(spotName);
+            spotService.insertSpot(scenicSpot);
+        }
+    }
+
+    private void ensureTagExists(Appointment appointment)
+    {
+
+        Tag tag = tagService.selectTagByTagName(appointment.getTag1());
+        if (tag == null) tagService.insertTag(new Tag(appointment.getTag1()));
+        tag = tagService.selectTagByTagName(appointment.getTag2());
+        if (tag == null) tagService.insertTag(new Tag(appointment.getTag2()));
+        tag = tagService.selectTagByTagName(appointment.getTag3());
+        if (tag == null) tagService.insertTag(new Tag(appointment.getTag3()));
+    }
+
 }

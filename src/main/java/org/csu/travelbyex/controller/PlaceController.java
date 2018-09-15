@@ -26,8 +26,8 @@ public class PlaceController {
     @Autowired
     SpotService spotService;
 
-    @ApiOperation(value = "根据地点名搜索地点信息")
-    @GetMapping("/appointmentsByPlace")
+    @ApiOperation(value = "根据地点名搜索地点及其下属地点信息")
+    @GetMapping("/placesByKeyword")
     public Result getPlaceByPlaceName(@RequestParam(value = "placeName") String placeName)
     {
         Map message = new LinkedHashMap();
@@ -63,5 +63,71 @@ public class PlaceController {
         message.put("spots",scenicSpots);
         return ResultGenerator.fail(message);
     }
+
+
+    @ApiOperation(value = "根据条件获取全部大地点", notes = "flag为0搜索国外，为1搜索国内，为2搜索全部")
+    @GetMapping("/allLargePlaces")
+    public Result getAllLps(@RequestParam(value = "flag") Integer flag)
+    {
+        List<LargePlace> largePlaces = new ArrayList<>();
+        switch (flag)
+        {
+            case 0:
+                largePlaces = spotService.getLPs(false);
+                break;
+            case 1:
+                largePlaces = spotService.getLPs(true);
+                break;
+            case 2:
+                largePlaces = spotService.getLPs(false);
+                List<LargePlace> largePlaces1 = spotService.getLPs(true);
+                largePlaces.addAll(largePlaces1);
+            default:
+                break;
+        }
+        if (largePlaces.size() == 0)
+            return ResultGenerator.success("搜索无结果");
+        return ResultGenerator.fail(largePlaces);
+    }
+
+
+    @ApiOperation(value = "根据大地点名搜索大地点（模糊查询）")
+    @GetMapping("/largePlacesByName")
+    public Result getLargePlacesByName(@RequestParam(value = "lpName") String lpName)
+    {
+        lpName = lpName + "%";
+        List<LargePlace> largePlaces = spotService.getLPsByName(lpName);
+        if (largePlaces.size() == 0)
+            return ResultGenerator.success("无此大地点！");
+        return ResultGenerator.fail(largePlaces);
+    }
+
+
+    @ApiOperation(value = "根据大地点名和小地点名查询小地点")
+    @GetMapping("/smallPlacesByLpNameAndSpName")
+    public Result getSmallPlacesByLpNameAndSpName(@RequestParam(value = "lpName") String lpName,
+                                                  @RequestParam(value = "spName") String spName)
+    {
+        spName = spName + "%";
+        List<SmallPlace> smallPlaces = spotService.getSmallPlacesByLpNameAndSpName(lpName, spName);
+        if (smallPlaces.size() == 0)
+            return ResultGenerator.success("无此小地点！");
+        return ResultGenerator.fail(smallPlaces);
+    }
+
+
+    @ApiOperation(value = "根据小地点名和景点名查询景点")
+    @GetMapping("/spotsBySpNameAndSpotName")
+    public Result getSpotsBySpNameAndSpotName(@RequestParam(value = "spName") String spName,
+                                              @RequestParam(value = "spotName") String spotName)
+    {
+        spotName = spotName + "%";
+        List<ScenicSpot> scenicSpots = spotService.getSpotsBySpNameAndSpotName(spName, spotName);
+        if (scenicSpots.size() == 0)
+            return ResultGenerator.success("该小地点不存在！");
+        return ResultGenerator.fail(scenicSpots);
+    }
+
+
 
 }

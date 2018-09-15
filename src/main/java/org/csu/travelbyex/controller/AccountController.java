@@ -46,6 +46,7 @@ public class AccountController {
     {
         try
         {
+            System.out.println(accountUp.getUserId());
             Account account = new Account();
             AccountInfo accountInfo = new AccountInfo();
             downAccountUp(accountUp, account, accountInfo);

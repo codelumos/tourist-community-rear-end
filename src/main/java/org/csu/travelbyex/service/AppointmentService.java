@@ -32,6 +32,8 @@ public interface AppointmentService {
 
     public List getAppointmentsByTime(Date date1, Date date2);
 
+    public List getAppointmentsByParticipantId(String participantId);
+
     public void updateAppointmentById(Appointment appointment);
 
     //回复
