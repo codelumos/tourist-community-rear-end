@@ -2,7 +2,7 @@ package org.csu.travelbyex.domain;
 
 import java.util.Date;
 
-public class Appointment {
+public class Appointment implements Comparable<Appointment>{
     private Integer appointmentId;
 
     private String authorId;
@@ -152,4 +152,35 @@ public class Appointment {
     public void setContentEx(String contentEx) {
         this.contentEx = contentEx == null ? null : contentEx.trim();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (this == obj)
+            return true;
+        if (obj instanceof Appointment) {
+            Appointment vo = (Appointment) obj;
+
+            // 比较每个属性的值 一致时才返回true
+            if (vo.appointmentId.equals(this.appointmentId))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * 重写hashcode 方法，返回的hashCode不一样才再去比较每个属性的值
+     */
+    @Override
+    public int hashCode() {
+        return appointmentId.hashCode();
+    }
+
+
+    @Override
+    public int compareTo(Appointment o) {
+        return this.getTime().compareTo(o.getTime());
+    }
+
 }

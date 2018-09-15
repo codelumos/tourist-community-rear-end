@@ -150,4 +150,29 @@ public class Article {
     public void setContentEx(String contentEx) {
         this.contentEx = contentEx == null ? null : contentEx.trim();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (this == obj)
+            return true;
+        if (obj instanceof Article) {
+            Article vo = (Article) obj;
+
+            // 比较每个属性的值 一致时才返回true
+            if (vo.articleId.equals(this.articleId))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * 重写hashcode 方法，返回的hashCode不一样才再去比较每个属性的值
+     */
+    @Override
+    public int hashCode() {
+        return articleId.hashCode();
+    }
+
 }

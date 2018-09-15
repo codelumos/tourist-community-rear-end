@@ -2,7 +2,7 @@ package org.csu.travelbyex.domain;
 
 import java.util.Date;
 
-public class AppointmentReply {
+public class AppointmentReply implements Comparable<AppointmentReply>{
     private Integer replyId;
 
     private Integer appointmentId;
@@ -63,5 +63,10 @@ public class AppointmentReply {
 
     public void setContentEx(String contentEx) {
         this.contentEx = contentEx == null ? null : contentEx.trim();
+    }
+
+    @Override
+    public int compareTo(AppointmentReply o) {
+        return this.getTime().compareTo(o.getTime());
     }
 }

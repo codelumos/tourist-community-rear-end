@@ -8,6 +8,7 @@ import org.csu.travelbyex.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -55,17 +56,23 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         AppointmentExample appointmentExample = new AppointmentExample();
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
-        criteria.andTag1EqualTo(tag);
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        criteria.andTag1Like(tag);
         List appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
 
-        criteria.andTag1IsNotNull();
-        criteria.andTag2EqualTo(tag);
+        appointmentExample = new AppointmentExample();
+        criteria = appointmentExample.createCriteria();
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        criteria.andTag2Like(tag);
         appointments.addAll( appointmentMapper.selectByExampleWithBLOBs(appointmentExample) );
 
-        criteria.andTag2IsNotNull();
-        criteria.andTag3EqualTo(tag);
+        appointmentExample = new AppointmentExample();
+        criteria = appointmentExample.createCriteria();
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        criteria.andTag3Like(tag);
         appointments.addAll( appointmentMapper.selectByExampleWithBLOBs(appointmentExample) );
 
+        Collections.sort(appointments);
         return appointments;
     }
 
@@ -73,34 +80,84 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List getAllAppointments(){
         AppointmentExample appointmentExample = new AppointmentExample();
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
-        criteria.andTimeGreaterThan(new Date());
-        return appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        List<Appointment> appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        Collections.sort(appointments);
+        return appointments;
     }
 
     @Override
     public List getAppointmentsByAuthorId(String authorId){
         AppointmentExample appointmentExample = new AppointmentExample();
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
-        criteria.andAuthorIdEqualTo(authorId);
-        return appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        criteria.andAuthorIdLike(authorId);
+        List<Appointment> appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        Collections.sort(appointments);
+        return appointments;
+    }
+
+    @Override
+    public List getAppointmentByLPName(String lpName) {
+        AppointmentExample appointmentExample = new AppointmentExample();
+        AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        criteria.andLpLike(lpName);
+        List<Appointment> appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        Collections.sort(appointments);
+        return appointments;
+    }
+
+    @Override
+    public List getAppointmentBySPName(String spName) {
+        AppointmentExample appointmentExample = new AppointmentExample();
+        AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        criteria.andSpLike(spName);
+        List<Appointment> appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        Collections.sort(appointments);
+        return appointments;
+    }
+
+    @Override
+    public List getAppointmentByTitle(String title) {
+        AppointmentExample appointmentExample = new AppointmentExample();
+        AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
+        criteria.andTitleLike(title);
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        List<Appointment> appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        Collections.sort(appointments);
+        return appointments;
     }
 
     @Override
     public List getAppointmentsBySpotName(String spotName){
         AppointmentExample appointmentExample = new AppointmentExample();
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
-        criteria.andSpotNameEqualTo(spotName);
-        return appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        criteria.andSpotNameLike(spotName);
+        criteria.andTimeGreaterThanOrEqualTo(new Date());
+        List<Appointment> appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        Collections.sort(appointments);
+        return appointments;
+    }
+
+    @Override
+    public List getAppointmentsByTime(Date date1, Date date2) {
+
+        AppointmentExample appointmentExample = new AppointmentExample();
+        AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
+        criteria.andTimeGreaterThanOrEqualTo(date1);
+        criteria.andTimeLessThanOrEqualTo(date2);
+        List<Appointment> appointments = appointmentMapper.selectByExampleWithBLOBs(appointmentExample);
+        Collections.sort(appointments);
+        return appointments;
+
     }
 
     @Override
     public void updateAppointmentById(Appointment appointment) {
         appointmentMapper.updateByPrimaryKey(appointment);
     }
-
-
-
-
 
 
     //回复
@@ -114,7 +171,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentReplyExample appointmentReplyExample = new AppointmentReplyExample();
         AppointmentReplyExample.Criteria criteria = appointmentReplyExample.createCriteria();
         criteria.andAppointmentIdEqualTo(appointmentId);
-        return appointmentReplyMapper.selectByExampleWithBLOBs(appointmentReplyExample);
+        List<AppointmentReply> appointmentReplies = appointmentReplyMapper.selectByExampleWithBLOBs(appointmentReplyExample);
+        Collections.sort(appointmentReplies);
+        return appointmentReplies;
     }
 
     //队友信息
@@ -129,6 +188,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentParticipantExample.Criteria criteria = appointmentParticipantExample.createCriteria();
         criteria.andAppointmentIdEqualTo(appointmentId);
         return appointmentParticipantMapper.selectByExample(appointmentParticipantExample);
+    }
+
+    @Override
+    public void deleteAppointmentParticipant(AppointmentParticipant appointmentParticipant) {
+        appointmentParticipantMapper.deleteByPrimaryKey(appointmentParticipant.getUserId(), appointmentParticipant.getAppointmentId());
     }
 
 

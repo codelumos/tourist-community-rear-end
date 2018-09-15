@@ -4,6 +4,7 @@ import org.csu.travelbyex.domain.Appointment;
 import org.csu.travelbyex.domain.AppointmentParticipant;
 import org.csu.travelbyex.domain.AppointmentReply;
 
+import java.util.Date;
 import java.util.List;
 
 public interface AppointmentService {
@@ -21,7 +22,15 @@ public interface AppointmentService {
 
     public List getAppointmentsByAuthorId(String authorId);
 
+    public List getAppointmentByLPName(String lpName);
+
+    public List getAppointmentBySPName(String spName);
+
+    public List getAppointmentByTitle(String title);
+
     public List getAppointmentsBySpotName(String spotName);
+
+    public List getAppointmentsByTime(Date date1, Date date2);
 
     public void updateAppointmentById(Appointment appointment);
 
@@ -34,4 +43,6 @@ public interface AppointmentService {
     public void insertAppointmentParticipant(AppointmentParticipant appointmentParticipant);
 
     public List getAppointmentParticipantsByAppointmentId(Integer appointmentId);
+
+    public void deleteAppointmentParticipant(AppointmentParticipant appointmentParticipant);
 }

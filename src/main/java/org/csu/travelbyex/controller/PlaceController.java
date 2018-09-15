@@ -27,7 +27,7 @@ public class PlaceController {
     SpotService spotService;
 
     @ApiOperation(value = "根据地点名搜索地点信息")
-    @GetMapping("/appointmentReply")
+    @GetMapping("/appointmentsByPlace")
     public Result getPlaceByPlaceName(@RequestParam(value = "placeName") String placeName)
     {
         Map message = new LinkedHashMap();
