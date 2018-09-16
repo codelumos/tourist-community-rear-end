@@ -1,5 +1,6 @@
 package org.csu.travelbyex.persistence;
 
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Arg;
 import org.apache.ibatis.annotations.ConstructorArgs;
@@ -32,15 +33,17 @@ public interface ArticleMapper {
 
     @Insert({
         "insert into article (author_id, title, ",
-        "cover_path, likes, ",
-        "readers, LP, SP, ",
-        "spot_name, tag1, ",
-        "tag2, tag3, content_ex)",
+        "time, cover_path, ",
+        "likes, readers, ",
+        "LP, SP, spot_name, ",
+        "tag1, tag2, tag3, ",
+        "content_ex)",
         "values (#{authorId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, ",
-        "#{coverPath,jdbcType=VARCHAR}, #{likes,jdbcType=INTEGER}, ",
-        "#{readers,jdbcType=INTEGER}, #{lp,jdbcType=VARCHAR}, #{sp,jdbcType=VARCHAR}, ",
-        "#{spotName,jdbcType=VARCHAR}, #{tag1,jdbcType=VARCHAR}, ",
-        "#{tag2,jdbcType=VARCHAR}, #{tag3,jdbcType=VARCHAR}, #{contentEx,jdbcType=LONGVARCHAR})"
+        "#{time,jdbcType=TIMESTAMP}, #{coverPath,jdbcType=VARCHAR}, ",
+        "#{likes,jdbcType=INTEGER}, #{readers,jdbcType=INTEGER}, ",
+        "#{lp,jdbcType=VARCHAR}, #{sp,jdbcType=VARCHAR}, #{spotName,jdbcType=VARCHAR}, ",
+        "#{tag1,jdbcType=VARCHAR}, #{tag2,jdbcType=VARCHAR}, #{tag3,jdbcType=VARCHAR}, ",
+        "#{contentEx,jdbcType=LONGVARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="articleId", before=false, resultType=Integer.class)
     int insert(Article record);
@@ -54,6 +57,7 @@ public interface ArticleMapper {
         @Arg(column="article_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER, id=true),
         @Arg(column="author_id", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="title", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="time", javaType=Date.class, jdbcType=JdbcType.TIMESTAMP),
         @Arg(column="cover_path", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="likes", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
         @Arg(column="readers", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
@@ -72,6 +76,7 @@ public interface ArticleMapper {
         @Arg(column="article_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER, id=true),
         @Arg(column="author_id", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="title", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="time", javaType=Date.class, jdbcType=JdbcType.TIMESTAMP),
         @Arg(column="cover_path", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="likes", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
         @Arg(column="readers", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
@@ -86,7 +91,7 @@ public interface ArticleMapper {
 
     @Select({
         "select",
-        "article_id, author_id, title, cover_path, likes, readers, LP, SP, spot_name, ",
+        "article_id, author_id, title, time, cover_path, likes, readers, LP, SP, spot_name, ",
         "tag1, tag2, tag3, content_ex",
         "from article",
         "where article_id = #{articleId,jdbcType=INTEGER}"
@@ -95,6 +100,7 @@ public interface ArticleMapper {
         @Arg(column="article_id", javaType=Integer.class, jdbcType=JdbcType.INTEGER, id=true),
         @Arg(column="author_id", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="title", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="time", javaType=Date.class, jdbcType=JdbcType.TIMESTAMP),
         @Arg(column="cover_path", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="likes", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
         @Arg(column="readers", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
@@ -124,6 +130,7 @@ public interface ArticleMapper {
         "update article",
         "set author_id = #{authorId,jdbcType=VARCHAR},",
           "title = #{title,jdbcType=VARCHAR},",
+          "time = #{time,jdbcType=TIMESTAMP},",
           "cover_path = #{coverPath,jdbcType=VARCHAR},",
           "likes = #{likes,jdbcType=INTEGER},",
           "readers = #{readers,jdbcType=INTEGER},",
@@ -142,6 +149,7 @@ public interface ArticleMapper {
         "update article",
         "set author_id = #{authorId,jdbcType=VARCHAR},",
           "title = #{title,jdbcType=VARCHAR},",
+          "time = #{time,jdbcType=TIMESTAMP},",
           "cover_path = #{coverPath,jdbcType=VARCHAR},",
           "likes = #{likes,jdbcType=INTEGER},",
           "readers = #{readers,jdbcType=INTEGER},",

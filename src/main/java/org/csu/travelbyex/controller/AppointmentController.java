@@ -1,6 +1,7 @@
 package org.csu.travelbyex.controller;
 
 import io.swagger.annotations.ApiOperation;
+import org.csu.travelbyex.core.AccountUp;
 import org.csu.travelbyex.core.AppointmentParticipantUp;
 import org.csu.travelbyex.core.Result;
 import org.csu.travelbyex.core.ResultGenerator;
@@ -9,6 +10,7 @@ import org.csu.travelbyex.service.AccountService;
 import org.csu.travelbyex.service.AppointmentService;
 import org.csu.travelbyex.service.SpotService;
 import org.csu.travelbyex.service.TagService;
+import org.csu.travelbyex.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +36,9 @@ public class AppointmentController {
     {
         try
         {
+            if (appointment.getTime() == null)
+                appointment.setTime(new Date());
+
             // 如果输入的景点名不在数据库中，就插入数据库。
             ensureSpotExists(appointment);
 
@@ -85,7 +90,7 @@ public class AppointmentController {
     {
         Appointment appointment = appointmentService.getAppointmentById(appointmentId);
         if (appointment == null)
-            return ResultGenerator.success("拼途不存在");
+            return ResultGenerator.fail("拼途不存在");
 
         List<AppointmentReply> appointmentReplies = appointmentService.getAppointmentRepliesByAppointmentId(appointmentId);
         // 回复按照时间升序排列
@@ -95,11 +100,15 @@ public class AppointmentController {
         // 加入参与者头像路径，便于前端显示
         appointmentParticipantsToAppointmentParticipantUps(appointmentParticipants, appointmentParticipantUps);
 
+        // 加入作者信息
+        AccountUp accountUp = addAccountUp(appointment.getAuthorId());
+
         Map message = new LinkedHashMap();
         message.put("appointment",appointment);
+        message.put("accountUp",accountUp);
         message.put("appointmentReplies",appointmentReplies);
         message.put("appointmentParticipantUps", appointmentParticipantUps);
-        return ResultGenerator.fail(message);
+        return ResultGenerator.success(message);
     }
     private void appointmentParticipantsToAppointmentParticipantUps(List<AppointmentParticipant> appointmentParticipants,
                                                                    List<AppointmentParticipantUp> appointmentParticipantUps)
@@ -135,10 +144,8 @@ public class AppointmentController {
     public Result getAllAppointments()
     {
         List<Appointment> appointments = appointmentService.getAllAppointments();
-        if (appointments.size() == 0)
-            return ResultGenerator.success("无此类拼途");
-        return ResultGenerator.fail(appointments);
-
+        Map map = getAppointmentsAndAccountUps(appointments);
+        return ResultGenerator.success(map);
     }
 
 
@@ -148,6 +155,8 @@ public class AppointmentController {
     {
         try
         {
+            if (appointmentReply.getTime() == null)
+                appointmentReply.setTime(new Date());
             appointmentService.insertAppointmentReply(appointmentReply);
             return ResultGenerator.success("回复成功！");
         }catch (Exception e)
@@ -199,10 +208,8 @@ public class AppointmentController {
     public Result getAppointment(@RequestParam(value = "authorId") String authorId)
     {
         List<Appointment> appointments = appointmentService.getAppointmentsByAuthorId(authorId);
-        if (appointments.size() == 0)
-            return ResultGenerator.success("该用户暂未发布拼途！");
-        Collections.sort(appointments);
-        return ResultGenerator.fail(appointments);
+        Map map = getAppointmentsAndAccountUps(appointments);
+        return ResultGenerator.success(map);
     }
 
 
@@ -210,7 +217,7 @@ public class AppointmentController {
     @GetMapping("/appointmentsByKeyword")
     public Result getAppointmentsByKeyword(@RequestParam(value = "keyword") String keyword)
     {
-        Set<Appointment> appointments = new TreeSet<>();
+        Set<Appointment> appointments = new HashSet<>();
         try
         {
             int appointmentId = Integer.parseInt(keyword);
@@ -233,8 +240,13 @@ public class AppointmentController {
             appointments1 = appointmentService.getAppointmentByTitle(keyword);
             if (appointments1 != null) appointments.addAll(appointments1);
 
-            if (appointments.size() == 0) return ResultGenerator.success("无此类拼途！");
-            return ResultGenerator.fail(appointments);
+            // 排序
+            List<Appointment> appointments2 = new ArrayList<>();
+            appointments2.addAll(appointments);
+            Collections.sort(appointments2);
+
+            Map map = getAppointmentsAndAccountUps(appointments2);
+            return ResultGenerator.success(map);
         }
     }
 
@@ -253,11 +265,14 @@ public class AppointmentController {
         appointments1 = appointmentService.getAppointmentsBySpotName(placeName);
         if (appointments1 != null) appointments.addAll(appointments1);
 
-        if (appointments.size() == 0) return ResultGenerator.success("无此类拼途！");
+        if (appointments.size() == 0) return ResultGenerator.success(null);
         appointments1.clear();
         appointments1.addAll(appointments);
         Collections.sort(appointments1);
-        return ResultGenerator.fail(appointments1);
+
+        Map map = getAppointmentsAndAccountUps(appointments1);
+
+        return ResultGenerator.success(map);
     }
 
 
@@ -266,10 +281,8 @@ public class AppointmentController {
     public Result getAppointmentsByTag(@RequestParam(value = "tag") String tag)
     {
         List<Appointment> appointments = appointmentService.getAppointmentsByTag(tag);
-        if (appointments == null)
-            return ResultGenerator.success("无此类拼途！");
-        Collections.sort(appointments);
-        return ResultGenerator.fail(appointments);
+        Map map = getAppointmentsAndAccountUps(appointments);
+        return ResultGenerator.success(map);
     }
 
 
@@ -294,9 +307,9 @@ public class AppointmentController {
         date2 = calendar.getTime();
 
         List<Appointment> appointments = appointmentService.getAppointmentsByTime(date1, date2);
-        if (appointments.size() == 0)
-            return ResultGenerator.success("没有该时间段的拼途");
-        return ResultGenerator.fail(appointments);
+
+        Map map = getAppointmentsAndAccountUps(appointments);
+        return ResultGenerator.success(map);
     }
 
 
@@ -305,9 +318,9 @@ public class AppointmentController {
     public Result getAppointmentsByParticipantId(@RequestParam(value = "participantId") String participantId)
     {
         List<Appointment> appointments = appointmentService.getAppointmentsByParticipantId(participantId);
-        if (appointments.size() == 0)
-            return ResultGenerator.success("你暂未参与拼途！");
-        return ResultGenerator.fail(appointments);
+
+        Map map = getAppointmentsAndAccountUps(appointments);
+        return ResultGenerator.success(map);
     }
 
 
@@ -320,7 +333,7 @@ public class AppointmentController {
         appointmentParticipantUp.setAppointmentImagePath(appointmentImagePath);
     }
 
-    // 如果数据库中没有用户输入的景点，就插入
+    // 如果数据库中没有用户输入的景点，就将景点插入数据库
     private void ensureSpotExists(Appointment appointment)
     {
         String spotName = appointment.getSpotName();
@@ -334,6 +347,7 @@ public class AppointmentController {
         }
     }
 
+    // 如果数据库中没有用户输入的标签，就将标签插入数据库
     private void ensureTagExists(Appointment appointment)
     {
 
@@ -345,4 +359,29 @@ public class AppointmentController {
         if (tag == null) tagService.insertTag(new Tag(appointment.getTag3()));
     }
 
+    // 加入作者信息
+    private AccountUp addAccountUp(String accountId)
+    {
+        Account account = accountService.getAccountByUserId(accountId);
+        AccountInfo accountInfo = accountService.getAccountInfoByUserId(accountId);
+        AccountUp accountUp = new AccountUp();
+        AccountUtil.upAccountUp(accountUp, account, accountInfo);
+        return accountUp;
+    }
+
+    // 返回拼途及其对应的作者列表
+    private Map getAppointmentsAndAccountUps(Collection<Appointment> appointments)
+    {
+        if (appointments.size() == 0) return new HashMap();
+        Map map = new LinkedHashMap();
+        List<AccountUp> accountUps = new ArrayList<>();
+        for (Appointment appointment:
+             appointments) {
+            accountUps.add(addAccountUp(appointment.getAuthorId()));
+        }
+        map.put("appointments", appointments);
+        map.put("accountUps", accountUps);
+        return map;
+    }
+    
 }

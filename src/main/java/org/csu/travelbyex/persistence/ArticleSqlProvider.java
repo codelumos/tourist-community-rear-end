@@ -49,6 +49,10 @@ public class ArticleSqlProvider {
             VALUES("title", "#{title,jdbcType=VARCHAR}");
         }
         
+        if (record.getTime() != null) {
+            VALUES("time", "#{time,jdbcType=TIMESTAMP}");
+        }
+        
         if (record.getCoverPath() != null) {
             VALUES("cover_path", "#{coverPath,jdbcType=VARCHAR}");
         }
@@ -101,6 +105,7 @@ public class ArticleSqlProvider {
         }
         SELECT("author_id");
         SELECT("title");
+        SELECT("time");
         SELECT("cover_path");
         SELECT("likes");
         SELECT("readers");
@@ -130,6 +135,7 @@ public class ArticleSqlProvider {
         }
         SELECT("author_id");
         SELECT("title");
+        SELECT("time");
         SELECT("cover_path");
         SELECT("likes");
         SELECT("readers");
@@ -166,6 +172,10 @@ public class ArticleSqlProvider {
         
         if (record.getTitle() != null) {
             SET("title = #{record.title,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getTime() != null) {
+            SET("time = #{record.time,jdbcType=TIMESTAMP}");
         }
         
         if (record.getCoverPath() != null) {
@@ -219,6 +229,7 @@ public class ArticleSqlProvider {
         SET("article_id = #{record.articleId,jdbcType=INTEGER}");
         SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         SET("title = #{record.title,jdbcType=VARCHAR}");
+        SET("time = #{record.time,jdbcType=TIMESTAMP}");
         SET("cover_path = #{record.coverPath,jdbcType=VARCHAR}");
         SET("likes = #{record.likes,jdbcType=INTEGER}");
         SET("readers = #{record.readers,jdbcType=INTEGER}");
@@ -242,6 +253,7 @@ public class ArticleSqlProvider {
         SET("article_id = #{record.articleId,jdbcType=INTEGER}");
         SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         SET("title = #{record.title,jdbcType=VARCHAR}");
+        SET("time = #{record.time,jdbcType=TIMESTAMP}");
         SET("cover_path = #{record.coverPath,jdbcType=VARCHAR}");
         SET("likes = #{record.likes,jdbcType=INTEGER}");
         SET("readers = #{record.readers,jdbcType=INTEGER}");
@@ -267,6 +279,10 @@ public class ArticleSqlProvider {
         
         if (record.getTitle() != null) {
             SET("title = #{title,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getTime() != null) {
+            SET("time = #{time,jdbcType=TIMESTAMP}");
         }
         
         if (record.getCoverPath() != null) {

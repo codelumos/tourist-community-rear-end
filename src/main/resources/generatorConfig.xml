@@ -86,28 +86,28 @@
 
         </javaClientGenerator>
 
-        <table tableName="account" domainObjectName="Account"></table>
-        <table tableName="account_info" domainObjectName="AccountInfo"></table>
-        <table tableName="article" domainObjectName="Article">
-            <generatedKey column="article_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="comment_ex" domainObjectName="Comment">
-            <generatedKey column="comment_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="reply" domainObjectName="Reply">
-            <generatedKey column="reply_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="appointment" domainObjectName="Appointment">
-            <generatedKey column="appointment_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="appointment_participant" domainObjectName="AppointmentParticipant"></table>
-        <table tableName="appointment_reply" domainObjectName="AppointmentReply">
-            <generatedKey column="reply_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="LP" domainObjectName="LargePlace"></table>
-        <table tableName="SP" domainObjectName="SmallPlace"></table>
-        <table tableName="scenic_spot" domainObjectName="ScenicSpot"></table>
-        <table tableName="tag" domainObjectName="Tag"></table>
+        <!--<table tableName="account" domainObjectName="Account"></table>-->
+        <!--<table tableName="account_info" domainObjectName="AccountInfo"></table>-->
+        <!--<table tableName="article" domainObjectName="Article">-->
+            <!--<generatedKey column="article_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="comment_ex" domainObjectName="Comment">-->
+            <!--<generatedKey column="comment_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="reply" domainObjectName="Reply">-->
+            <!--<generatedKey column="reply_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="appointment" domainObjectName="Appointment">-->
+            <!--<generatedKey column="appointment_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="appointment_participant" domainObjectName="AppointmentParticipant"></table>-->
+        <!--<table tableName="appointment_reply" domainObjectName="AppointmentReply">-->
+            <!--<generatedKey column="reply_id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="LP" domainObjectName="LargePlace"></table>-->
+        <!--<table tableName="SP" domainObjectName="SmallPlace"></table>-->
+        <!--<table tableName="scenic_spot" domainObjectName="ScenicSpot"></table>-->
+        <!--<table tableName="tag" domainObjectName="Tag"></table>-->
 
 
 

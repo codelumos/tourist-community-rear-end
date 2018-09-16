@@ -1,11 +1,15 @@
 package org.csu.travelbyex.domain;
 
-public class Article {
+import java.util.Date;
+
+public class Article implements Comparable<Article> {
     private Integer articleId;
 
     private String authorId;
 
     private String title;
+
+    private Date time;
 
     private String coverPath;
 
@@ -27,10 +31,11 @@ public class Article {
 
     private String contentEx;
 
-    public Article(Integer articleId, String authorId, String title, String coverPath, Integer likes, Integer readers, String lp, String sp, String spotName, String tag1, String tag2, String tag3, String contentEx) {
+    public Article(Integer articleId, String authorId, String title, Date time, String coverPath, Integer likes, Integer readers, String lp, String sp, String spotName, String tag1, String tag2, String tag3, String contentEx) {
         this.articleId = articleId;
         this.authorId = authorId;
         this.title = title;
+        this.time = time;
         this.coverPath = coverPath;
         this.likes = likes;
         this.readers = readers;
@@ -69,6 +74,14 @@ public class Article {
 
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 
     public String getCoverPath() {
@@ -151,6 +164,7 @@ public class Article {
         this.contentEx = contentEx == null ? null : contentEx.trim();
     }
 
+    // 为了使用hashset去重
     @Override
     public boolean equals(Object obj) {
         if (obj == null)
@@ -160,19 +174,31 @@ public class Article {
         if (obj instanceof Article) {
             Article vo = (Article) obj;
 
-            // 比较每个属性的值 一致时才返回true
+            // 比较主键属性的值 一致时才返回true
             if (vo.articleId.equals(this.articleId))
                 return true;
         }
         return false;
     }
-
-    /**
-     * 重写hashcode 方法，返回的hashCode不一样才再去比较每个属性的值
-     */
     @Override
     public int hashCode() {
         return articleId.hashCode();
+    }
+
+
+    // 为了使用arrayList排序
+    @Override
+    public int compareTo(Article o) {
+        if (this.getTime() == null)
+            return 1;
+        if (o.getTime() == null)
+            return -1;
+        int a = this.getTime().compareTo(o.getTime());
+        // list添加值时如果compareTo返回值为0就不添加了。
+        if (a == 0)
+            return 1;
+        else
+            return this.getTime().compareTo(o.getTime());
     }
 
 }

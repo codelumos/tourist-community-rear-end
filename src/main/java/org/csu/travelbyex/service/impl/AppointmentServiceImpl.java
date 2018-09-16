@@ -8,10 +8,7 @@ import org.csu.travelbyex.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -73,6 +70,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         criteria.andTag3Like(tag);
         appointments.addAll( appointmentMapper.selectByExampleWithBLOBs(appointmentExample) );
 
+        // 去重
+        Set<Appointment> appointments1 = new HashSet<>();
+        appointments1.addAll(appointments);
+        appointments.clear();
+        appointments.addAll(appointments1);
+
+        // 排序
         Collections.sort(appointments);
         return appointments;
     }

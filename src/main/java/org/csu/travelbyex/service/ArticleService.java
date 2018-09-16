@@ -33,7 +33,7 @@ public interface ArticleService {
     public void deleteArticleById(Integer articleId);
 
     //评论
-    public void inserComment(Comment comment);
+    public void insertComment(Comment comment);
 
     public List getCommentsByArticleId(Integer articleId);
 

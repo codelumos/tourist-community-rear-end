@@ -8,6 +8,7 @@ import org.csu.travelbyex.core.ResultGenerator;
 import org.csu.travelbyex.domain.Account;
 import org.csu.travelbyex.domain.AccountInfo;
 import org.csu.travelbyex.service.AccountService;
+import org.csu.travelbyex.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +50,7 @@ public class AccountController {
             System.out.println(accountUp.getUserId());
             Account account = new Account();
             AccountInfo accountInfo = new AccountInfo();
-            downAccountUp(accountUp, account, accountInfo);
+            AccountUtil.downAccountUp(accountUp, account, accountInfo);
             accountService.updateAccount(account);
             accountService.updateAccountInfo(accountInfo);
             return ResultGenerator.success("更新成功！");
@@ -69,7 +70,7 @@ public class AccountController {
             return ResultGenerator.success("用户不存在！");
         AccountUp accountUp = new AccountUp();
         AccountInfo accountInfo = accountService.getAccountInfoByUserId(userId);
-        upAccountUp(accountUp,account,accountInfo);
+        AccountUtil.upAccountUp(accountUp,account,accountInfo);
         return ResultGenerator.fail(accountUp);
     }
 
@@ -94,7 +95,7 @@ public class AccountController {
         if (account == null) return ResultGenerator.fail("登录失败！");
         AccountInfo accountInfo = accountService.getAccountInfoByUserId(account.getUserId());
         AccountUp accountUp = new AccountUp();
-        upAccountUp(accountUp, account,accountInfo);
+        AccountUtil.upAccountUp(accountUp, account,accountInfo);
         return ResultGenerator.success(accountUp);
     }
 
@@ -108,74 +109,6 @@ public class AccountController {
     }
 
 
-    private void downAccountUp(AccountUp accountUp, Account account, AccountInfo accountInfo)
-    {
-        account.setUserId(accountUp.getUserId());
-        account.setPassword(accountUp.getPassword());
 
-        accountInfo.setDescription(accountUp.getDescription());
-        accountInfo.setUserName(accountUp.getUserName());
-        accountInfo.setUserId(accountUp.getUserId());
-        accountInfo.setBirthday(accountUp.getBirthday());
-        accountInfo.setImagePath(accountUp.getImagePath());
-        accountInfo.setSex(accountUp.getSex());
-        accountInfo.setTag1(accountUp.getTag1());
-        accountInfo.setTag2(accountUp.getTag2());
-        accountInfo.setTag3(accountUp.getTag3());
-        String homelp = "";
-        String livelp = "";
-        if (accountUp.getHome() != null && accountUp.getHome().size() != 0)
-            homelp = accountUp.getHome().toString();
-        if (accountUp.getLive() != null && accountUp.getLive().size() != 0)
-            livelp = accountUp.getLive().toString();
-
-        if (!homelp.equals(""))
-            accountInfo.setHomelp(homelp);
-        if (!livelp.equals(""))
-            accountInfo.setLivelp(livelp);
-    }
-
-    private void upAccountUp(AccountUp accountUp, Account account, AccountInfo accountInfo)
-    {
-        accountUp.setUserId(account.getUserId());
-        accountUp.setPassword(account.getPassword());
-        accountUp.setUserName(accountInfo.getUserName());
-        accountUp.setBirthday(accountInfo.getBirthday());
-        accountUp.setDescription(accountInfo.getDescription());
-        accountUp.setImagePath(accountInfo.getImagePath());
-        accountUp.setSex(accountInfo.getSex());
-        accountUp.setTag1(accountInfo.getTag1());
-        accountUp.setTag2(accountInfo.getTag2());
-        accountUp.setTag3(accountInfo.getTag3());
-
-        List<Integer> home = new ArrayList<>();
-        List<Integer> live = new ArrayList<>();
-
-        String homelp = accountInfo.getHomelp();
-        String[] homelps = null;
-        if (homelp != null && homelp.length() != 2)
-        {
-            homelps = homelp.substring(1, homelp.length()-1).split(", ");
-            for (String s :
-                    homelps) {
-                home.add(Integer.parseInt(s));
-            }
-        }
-
-        String livelp = accountInfo.getLivelp();
-        String[] livelps = null;
-        if (livelp != null && livelp.length() != 2)
-        {
-            livelps = livelp.substring(1,livelp.length() - 1).split(", ");
-            for (String s :
-                    livelps) {
-                live.add(Integer.parseInt(s));
-            }
-        }
-
-
-        accountUp.setLive(live);
-        accountUp.setHome(home);
-    }
 
 }

@@ -57,11 +57,11 @@ public class PlaceController {
             }
         }
         if (largePlace == null && smallPlaces.size() == 0 && scenicSpots.size() == 0)
-            return ResultGenerator.success("该地点信息暂未收录！");
+            return ResultGenerator.fail("该地点信息暂未收录！");
         message.put("largePlace",largePlace);
         message.put("smallPlaces",smallPlaces);
         message.put("spots",scenicSpots);
-        return ResultGenerator.fail(message);
+        return ResultGenerator.success(message);
     }
 
 
@@ -86,8 +86,8 @@ public class PlaceController {
                 break;
         }
         if (largePlaces.size() == 0)
-            return ResultGenerator.success("搜索无结果");
-        return ResultGenerator.fail(largePlaces);
+            return ResultGenerator.fail("搜索无结果");
+        return ResultGenerator.success(largePlaces);
     }
 
 
@@ -98,8 +98,8 @@ public class PlaceController {
         lpName = lpName + "%";
         List<LargePlace> largePlaces = spotService.getLPsByName(lpName);
         if (largePlaces.size() == 0)
-            return ResultGenerator.success("无此大地点！");
-        return ResultGenerator.fail(largePlaces);
+            return ResultGenerator.fail("无此大地点！");
+        return ResultGenerator.success(largePlaces);
     }
 
 
@@ -111,8 +111,8 @@ public class PlaceController {
         spName = spName + "%";
         List<SmallPlace> smallPlaces = spotService.getSmallPlacesByLpNameAndSpName(lpName, spName);
         if (smallPlaces.size() == 0)
-            return ResultGenerator.success("无此小地点！");
-        return ResultGenerator.fail(smallPlaces);
+            return ResultGenerator.fail("无此小地点！");
+        return ResultGenerator.success(smallPlaces);
     }
 
 
@@ -124,10 +124,8 @@ public class PlaceController {
         spotName = spotName + "%";
         List<ScenicSpot> scenicSpots = spotService.getSpotsBySpNameAndSpotName(spName, spotName);
         if (scenicSpots.size() == 0)
-            return ResultGenerator.success("该小地点不存在！");
-        return ResultGenerator.fail(scenicSpots);
+            return ResultGenerator.fail("该小地点不存在！");
+        return ResultGenerator.success(scenicSpots);
     }
-
-
 
 }

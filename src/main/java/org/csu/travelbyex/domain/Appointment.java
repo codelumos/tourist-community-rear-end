@@ -153,6 +153,8 @@ public class Appointment implements Comparable<Appointment>{
         this.contentEx = contentEx == null ? null : contentEx.trim();
     }
 
+
+
     // 为了使用hashset去重
     @Override
     public boolean equals(Object obj) {
@@ -178,6 +180,10 @@ public class Appointment implements Comparable<Appointment>{
     // 为了使用arrayList排序
     @Override
     public int compareTo(Appointment o) {
+        if (this.getTime() == null)
+            return 1;
+        if (o.getTime() == null)
+            return -1;
         int a = this.getTime().compareTo(o.getTime());
         // list添加值时如果compareTo返回值为0就不添加了。
         if (a == 0)
@@ -185,5 +191,4 @@ public class Appointment implements Comparable<Appointment>{
         else
             return this.getTime().compareTo(o.getTime());
     }
-
 }

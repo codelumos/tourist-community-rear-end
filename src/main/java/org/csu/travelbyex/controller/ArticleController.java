@@ -2,11 +2,15 @@ package org.csu.travelbyex.controller;
 
 
 import io.swagger.annotations.ApiOperation;
+import org.csu.travelbyex.core.AccountUp;
 import org.csu.travelbyex.core.Result;
 import org.csu.travelbyex.core.ResultGenerator;
 import org.csu.travelbyex.domain.*;
+import org.csu.travelbyex.service.AccountService;
 import org.csu.travelbyex.service.ArticleService;
 import org.csu.travelbyex.service.SpotService;
+import org.csu.travelbyex.service.TagService;
+import org.csu.travelbyex.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +24,11 @@ public class ArticleController {
     ArticleService articleService;
     @Autowired
     SpotService spotService;
+    @Autowired
+    TagService tagService;
+    @Autowired
+    AccountService accountService;
+
 
     @ApiOperation(value = "发布一篇文章", notes = "/")
     @PostMapping("/articles")
@@ -27,11 +36,13 @@ public class ArticleController {
     {
         try
         {
+            ensureSpotExists(article);
+            ensureTagExists(article);
             articleService.insertArticle(article);
-            return ResultGenerator.success("发布成功");
+            return ResultGenerator.success("发布成功！");
         }catch (Exception e)
         {
-            return ResultGenerator.fail("发布失败");
+            return ResultGenerator.fail("发布失败！");
         }
     }
 
@@ -41,6 +52,8 @@ public class ArticleController {
     public Result updateArticle(@RequestBody Article article)
     {
         try{
+            ensureSpotExists(article);
+            ensureTagExists(article);
             articleService.updateArticle(article);
             return ResultGenerator.success("更新成功");
         }catch (Exception e)
@@ -82,11 +95,26 @@ public class ArticleController {
 
 
     @ApiOperation(value = "查询某一用户的所有文章")
-    @GetMapping("/articles/author")
+    @GetMapping("/articlesByAuthor")
     public Result getArticlesByAuthorId(@RequestParam(value = "authorId") String authorId)
     {
         List<Article> articles = articleService.getArticlesByAuthorId(authorId);
-        return ResultGenerator.success(articles);
+        List<AccountUp> accountUps = new ArrayList<>();
+        for (Article article :
+                articles) {
+            Account account = accountService.getAccountByUserId(article.getAuthorId());
+            AccountInfo accountInfo = accountService.getAccountInfoByUserId(article.getAuthorId());
+            AccountUp accountUp = new AccountUp();
+            AccountUtil.upAccountUp(accountUp, account, accountInfo);
+
+            accountUps.add(accountUp);
+        }
+        Map map = new LinkedHashMap();
+        map.put("articles", articles);
+        map.put("accountUps", accountUps);
+        if (articles.size() == 0)
+            return ResultGenerator.fail("暂未发布");
+        return ResultGenerator.success(map);
 
     }
 
@@ -97,7 +125,7 @@ public class ArticleController {
     {
         try
         {
-            articleService.inserComment(comment);
+            articleService.insertComment(comment);
             return ResultGenerator.success("评论成功！");
         }catch (Exception e)
         {
@@ -148,10 +176,36 @@ public class ArticleController {
             if (articles1 != null) articles.addAll(articles1);
 
             if (articles.size() == 0)
-                return ResultGenerator.success("无此类文章！");
+                return ResultGenerator.fail("无此类文章！");
 
-            return ResultGenerator.fail(articles);
+            return ResultGenerator.success(articles);
         }
+    }
+
+    // 如果数据库中没有用户输入的景点，就将景点插入数据库
+    private void ensureSpotExists(Article article)
+    {
+        String spotName = article.getSpotName();
+        ScenicSpot scenicSpot = spotService.getScenicSpotByName(spotName);
+        if (scenicSpot == null)
+        {
+            scenicSpot = new ScenicSpot();
+            scenicSpot.setPlaceId(1);
+            scenicSpot.setSpotName(spotName);
+            spotService.insertSpot(scenicSpot);
+        }
+    }
+
+    // 如果数据库中没有用户输入的标签，就将标签插入数据库
+    private void ensureTagExists(Article article)
+    {
+
+        Tag tag = tagService.selectTagByTagName(article.getTag1());
+        if (tag == null) tagService.insertTag(new Tag(article.getTag1()));
+        tag = tagService.selectTagByTagName(article.getTag2());
+        if (tag == null) tagService.insertTag(new Tag(article.getTag2()));
+        tag = tagService.selectTagByTagName(article.getTag3());
+        if (tag == null) tagService.insertTag(new Tag(article.getTag3()));
     }
 
 }

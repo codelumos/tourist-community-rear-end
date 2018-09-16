@@ -2,7 +2,7 @@ package org.csu.travelbyex.domain;
 
 import java.util.Date;
 
-public class Reply {
+public class Reply implements Comparable<Reply> {
     private Integer replyId;
 
     private String authorId;
@@ -74,5 +74,19 @@ public class Reply {
 
     public void setContentEx(String contentEx) {
         this.contentEx = contentEx == null ? null : contentEx.trim();
+    }
+
+    @Override
+    public int compareTo(Reply o) {
+        if (this.getReplyTime() == null)
+            return 1;
+        if (o.getReplyTime() == null)
+            return -1;
+        int a = this.getReplyTime().compareTo(o.getReplyTime());
+        // list添加值时如果compareTo返回值为0就不添加了。
+        if (a == 0)
+            return 1;
+        else
+            return this.getReplyTime().compareTo(o.getReplyTime());
     }
 }
