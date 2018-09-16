@@ -198,7 +198,7 @@ public class Article implements Comparable<Article> {
         if (a == 0)
             return 1;
         else
-            return this.getTime().compareTo(o.getTime());
+            return -a;
     }
 
 }

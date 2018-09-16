@@ -3,11 +3,15 @@ package org.csu.travelbyex.util;
 import org.csu.travelbyex.core.AccountUp;
 import org.csu.travelbyex.domain.Account;
 import org.csu.travelbyex.domain.AccountInfo;
+import org.csu.travelbyex.domain.Appointment;
+import org.csu.travelbyex.domain.Article;
+import org.csu.travelbyex.service.AccountService;
+import org.csu.travelbyex.service.impl.AccountServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AccountUtil {
+
 
     public static void downAccountUp(AccountUp accountUp, Account account, AccountInfo accountInfo)
     {
@@ -78,6 +82,48 @@ public class AccountUtil {
         accountUp.setLive(live);
         accountUp.setHome(home);
     }
+
+
+//    // 获得作者信息
+//    public static AccountUp getAccountUp(String accountId)
+//    {
+//        Account account = accountService.getAccountByUserId(accountId);
+//        AccountInfo accountInfo = accountService.getAccountInfoByUserId(accountId);
+//        AccountUp accountUp = new AccountUp();
+//        AccountUtil.upAccountUp(accountUp, account, accountInfo);
+//        return accountUp;
+//    }
+//
+//    // 返回拼途或者文章及其对应的作者列表
+//    public static Map addAccountUps(List list)
+//    {
+//        if (list.size() == 0) return new HashMap();
+//        Map map = new LinkedHashMap();
+//        List<AccountUp> accountUps = new ArrayList<>();
+//
+//        if (list.get(0) instanceof Appointment)
+//        {
+//            for (Object appointment:
+//                    list) {
+//                accountUps.add(getAccountUp(((Appointment)appointment).getAuthorId()));
+//            }
+//            map.put("appointments", list);
+//        }
+//
+//        if (list.get(0) instanceof Article)
+//        {
+//            for (Object article:
+//                    list) {
+//                accountUps.add(getAccountUp(((Article)article).getAuthorId()));
+//            }
+//            map.put("articles", list);
+//        }
+//
+//
+//        map.put("accountUps", accountUps);
+//        return map;
+//    }
+
 
 
 }

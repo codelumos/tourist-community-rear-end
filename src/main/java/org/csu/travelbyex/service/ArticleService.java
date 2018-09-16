@@ -4,6 +4,7 @@ import org.csu.travelbyex.domain.Article;
 import org.csu.travelbyex.domain.Comment;
 import org.csu.travelbyex.domain.Reply;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ArticleService {
@@ -25,6 +26,10 @@ public interface ArticleService {
     public List getArticlesByTags(List tags);
 
     public Article getArticleById(Integer articleId);
+
+    public List getArticlesByTime(Date date1,Date date2);
+
+    public List getArticlesOrderedByLikes();
 
     //修改
     public void updateArticle(Article article);

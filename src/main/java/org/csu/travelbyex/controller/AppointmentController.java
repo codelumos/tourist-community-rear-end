@@ -1,10 +1,7 @@
 package org.csu.travelbyex.controller;
 
 import io.swagger.annotations.ApiOperation;
-import org.csu.travelbyex.core.AccountUp;
-import org.csu.travelbyex.core.AppointmentParticipantUp;
-import org.csu.travelbyex.core.Result;
-import org.csu.travelbyex.core.ResultGenerator;
+import org.csu.travelbyex.core.*;
 import org.csu.travelbyex.domain.*;
 import org.csu.travelbyex.service.AccountService;
 import org.csu.travelbyex.service.AppointmentService;
@@ -93,34 +90,27 @@ public class AppointmentController {
             return ResultGenerator.fail("拼途不存在");
 
         List<AppointmentReply> appointmentReplies = appointmentService.getAppointmentRepliesByAppointmentId(appointmentId);
-        // 回复按照时间升序排列
-        Collections.sort(appointmentReplies);
         List<AppointmentParticipant> appointmentParticipants = appointmentService.getAppointmentParticipantsByAppointmentId(appointmentId);
-        List<AppointmentParticipantUp> appointmentParticipantUps = new ArrayList<>();
+
         // 加入参与者头像路径，便于前端显示
+        List<AppointmentParticipantUp> appointmentParticipantUps = new ArrayList<>();
         appointmentParticipantsToAppointmentParticipantUps(appointmentParticipants, appointmentParticipantUps);
 
         // 加入作者信息
         AccountUp accountUp = addAccountUp(appointment.getAuthorId());
 
+        // 加入评论者信息
+        List<AppointmentReplyUp> appointmentReplyUps = new ArrayList<>();
+        appointmentRepliesToAppointmentReplyUps(appointmentReplies, appointmentReplyUps);
+
         Map message = new LinkedHashMap();
         message.put("appointment",appointment);
         message.put("accountUp",accountUp);
-        message.put("appointmentReplies",appointmentReplies);
+        message.put("appointmentReplyUps",appointmentReplyUps);
         message.put("appointmentParticipantUps", appointmentParticipantUps);
         return ResultGenerator.success(message);
     }
-    private void appointmentParticipantsToAppointmentParticipantUps(List<AppointmentParticipant> appointmentParticipants,
-                                                                   List<AppointmentParticipantUp> appointmentParticipantUps)
-    {
-        for (AppointmentParticipant appointmentParticipant :
-                appointmentParticipants) {
-            AppointmentParticipantUp appointmentParticipantUp = new AppointmentParticipantUp();
-            upAppointmentParticipantUp(appointmentParticipant, appointmentParticipantUp);
-            appointmentParticipantUps.add(appointmentParticipantUp);
-        }
 
-    }
 
 
     @ApiOperation(value = "根据appointmentId删除拼途")
@@ -146,6 +136,7 @@ public class AppointmentController {
         List<Appointment> appointments = appointmentService.getAllAppointments();
         Map map = getAppointmentsAndAccountUps(appointments);
         return ResultGenerator.success(map);
+
     }
 
 
@@ -158,7 +149,9 @@ public class AppointmentController {
             if (appointmentReply.getTime() == null)
                 appointmentReply.setTime(new Date());
             appointmentService.insertAppointmentReply(appointmentReply);
-            return ResultGenerator.success("回复成功！");
+            AppointmentReplyUp appointmentReplyUp = new AppointmentReplyUp();
+            upAppointmentReplyUp(appointmentReply, appointmentReplyUp);
+            return ResultGenerator.success(appointmentReplyUp);
         }catch (Exception e)
         {
             return ResultGenerator.fail("回复失败！");
@@ -203,14 +196,33 @@ public class AppointmentController {
     }
 
 
+//    @ApiOperation(value = "查询我创建的拼途")
+//    @GetMapping("/appointmentsByAuthor")
+//    public Result getAppointment(@RequestParam(value = "authorId") String authorId)
+//    {
+//        List<Appointment> appointments = appointmentService.getAppointmentsByAuthorId(authorId);
+//        Map map = getAppointmentsAndAccountUps(appointments);
+//        return ResultGenerator.success(map);
+//    }
+
     @ApiOperation(value = "查询我创建的拼途")
     @GetMapping("/appointmentsByAuthor")
     public Result getAppointment(@RequestParam(value = "authorId") String authorId)
     {
-        List<Appointment> appointments = appointmentService.getAppointmentsByAuthorId(authorId);
-        Map map = getAppointmentsAndAccountUps(appointments);
-        return ResultGenerator.success(map);
+        if (authorId.equals("0")) // authorId为0返回全部
+        {
+            List<Appointment> appointments = appointmentService.getAllAppointments();
+            Map map = getAppointmentsAndAccountUps(appointments);
+            return ResultGenerator.success(map);
+        }
+        else  // authorId为其他值返回作者的拼途
+        {
+            List<Appointment> appointments = appointmentService.getAppointmentsByAuthorId(authorId);
+            Map map = getAppointmentsAndAccountUps(appointments);
+            return ResultGenerator.success(map);
+        }
     }
+
 
 
     @ApiOperation(value = "根据keyword查询拼途")
@@ -324,7 +336,7 @@ public class AppointmentController {
     }
 
 
-    // 转换数据库中查出的值
+    // 参与者
     private void upAppointmentParticipantUp(AppointmentParticipant appointmentParticipant, AppointmentParticipantUp appointmentParticipantUp)
     {
         appointmentParticipantUp.setAppointmentId(appointmentParticipant.getAppointmentId());
@@ -332,6 +344,44 @@ public class AppointmentController {
         String appointmentImagePath = accountService.getAccountInfoByUserId(appointmentParticipant.getUserId()).getImagePath();
         appointmentParticipantUp.setAppointmentImagePath(appointmentImagePath);
     }
+    private void appointmentParticipantsToAppointmentParticipantUps(List<AppointmentParticipant> appointmentParticipants,
+                                                                    List<AppointmentParticipantUp> appointmentParticipantUps)
+    {
+        for (AppointmentParticipant appointmentParticipant :
+                appointmentParticipants) {
+            AppointmentParticipantUp appointmentParticipantUp = new AppointmentParticipantUp();
+            upAppointmentParticipantUp(appointmentParticipant, appointmentParticipantUp);
+            appointmentParticipantUps.add(appointmentParticipantUp);
+        }
+
+    }
+
+
+    // 评论
+    private void upAppointmentReplyUp(AppointmentReply appointmentReply, AppointmentReplyUp appointmentReplyUp)
+    {
+        appointmentReplyUp.setAppointmentId(appointmentReply.getAppointmentId());
+        appointmentReplyUp.setAuthorId(appointmentReply.getAuthorId());
+        appointmentReplyUp.setContentEx(appointmentReply.getContentEx());
+        appointmentReplyUp.setReplyId(appointmentReply.getReplyId());
+        appointmentReplyUp.setTime(appointmentReply.getTime());
+        AccountInfo accountInfo = accountService.getAccountInfoByUserId(appointmentReply.getAuthorId());
+        appointmentReplyUp.setUserName(accountInfo.getUserName());
+        appointmentReplyUp.setImagePath(accountInfo.getImagePath());
+
+    }
+    private void appointmentRepliesToAppointmentReplyUps(List<AppointmentReply> appointmentReplies,
+                                                         List<AppointmentReplyUp> appointmentReplyUps)
+    {
+
+        for (AppointmentReply appointmentReply :
+                appointmentReplies) {
+            AppointmentReplyUp appointmentReplyUp = new AppointmentReplyUp();
+            upAppointmentReplyUp(appointmentReply, appointmentReplyUp);
+            appointmentReplyUps.add(appointmentReplyUp);
+        }
+    }
+
 
     // 如果数据库中没有用户输入的景点，就将景点插入数据库
     private void ensureSpotExists(Appointment appointment)
@@ -359,6 +409,7 @@ public class AppointmentController {
         if (tag == null) tagService.insertTag(new Tag(appointment.getTag3()));
     }
 
+
     // 加入作者信息
     private AccountUp addAccountUp(String accountId)
     {
@@ -383,5 +434,5 @@ public class AppointmentController {
         map.put("accountUps", accountUps);
         return map;
     }
-    
+
 }

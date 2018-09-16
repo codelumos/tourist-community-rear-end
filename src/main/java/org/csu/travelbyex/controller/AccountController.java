@@ -41,13 +41,13 @@ public class AccountController {
         }
     }
 
+
     @ApiOperation(value = "根据userId更新用户信息")
     @PutMapping("/accounts")
     public Result updateAccount(@RequestBody AccountUp accountUp)
     {
         try
         {
-            System.out.println(accountUp.getUserId());
             Account account = new Account();
             AccountInfo accountInfo = new AccountInfo();
             AccountUtil.downAccountUp(accountUp, account, accountInfo);
@@ -107,8 +107,6 @@ public class AccountController {
         System.out.println(per_page);
         return null;
     }
-
-
 
 
 }

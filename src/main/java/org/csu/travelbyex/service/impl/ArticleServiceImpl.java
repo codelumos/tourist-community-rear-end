@@ -90,7 +90,7 @@ public class ArticleServiceImpl implements ArticleService{
 
         // 去重，防止一篇文章三个标签相同被搜索多遍
         Set<Article> articles1 = new HashSet<>();
-        articles.addAll(articles);
+        articles1.addAll(articles);
         articles.clear();
         articles.addAll(articles1);
 
@@ -128,6 +128,26 @@ public class ArticleServiceImpl implements ArticleService{
     @Override
     public Article getArticleById(Integer articleId){
         return articleMapper.selectByPrimaryKey(articleId);
+    }
+
+    @Override
+    public List getArticlesByTime(Date date1, Date date2) {
+        ArticleExample articleExample = new ArticleExample();
+        ArticleExample.Criteria criteria = articleExample.createCriteria();
+        criteria.andTimeGreaterThanOrEqualTo(date1);
+        criteria.andTimeLessThanOrEqualTo(date2);
+        List<Article> articles = articleMapper.selectByExampleWithBLOBs(articleExample);
+        Collections.sort(articles);
+        return articles;
+    }
+
+    @Override
+    public List getArticlesOrderedByLikes() {
+
+        ArticleExample articleExample = new ArticleExample();
+        articleExample.setOrderByClause("likes desc");
+        List<Article> articles = articleMapper.selectByExampleWithBLOBs(articleExample);
+        return articles;
     }
 
     //修改

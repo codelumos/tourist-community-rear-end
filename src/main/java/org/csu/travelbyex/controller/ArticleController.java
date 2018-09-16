@@ -2,9 +2,7 @@ package org.csu.travelbyex.controller;
 
 
 import io.swagger.annotations.ApiOperation;
-import org.csu.travelbyex.core.AccountUp;
-import org.csu.travelbyex.core.Result;
-import org.csu.travelbyex.core.ResultGenerator;
+import org.csu.travelbyex.core.*;
 import org.csu.travelbyex.domain.*;
 import org.csu.travelbyex.service.AccountService;
 import org.csu.travelbyex.service.ArticleService;
@@ -15,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
 
 @RestController
 @CrossOrigin
@@ -36,10 +35,12 @@ public class ArticleController {
     {
         try
         {
+            if (article.getTime() == null)
+                article.setTime(new Date());
             ensureSpotExists(article);
             ensureTagExists(article);
-            articleService.insertArticle(article);
-            return ResultGenerator.success("发布成功！");
+            int articleId = articleService.insertArticle(article);
+            return ResultGenerator.success(articleId);
         }catch (Exception e)
         {
             return ResultGenerator.fail("发布失败！");
@@ -52,6 +53,8 @@ public class ArticleController {
     public Result updateArticle(@RequestBody Article article)
     {
         try{
+            if (article.getTime() == null)
+                article.setTime(new Date());
             ensureSpotExists(article);
             ensureTagExists(article);
             articleService.updateArticle(article);
@@ -67,14 +70,33 @@ public class ArticleController {
     @GetMapping("/articles")
     public Result getArticleByArticleId(@RequestParam(value = "articleId") Integer articleId)
     {
+        // 文章信息
         Article article = articleService.getArticleById(articleId);
-        if (article == null) return ResultGenerator.fail("文章不存在");
+
+        // 文章作者信息
+        AccountUp accountUp = getAccountUp(article.getAuthorId());
+
+        // 文章评论信息
         List<Comment> comments = articleService.getCommentsByArticleId(articleId);
-        List<Reply> replies = articleService.getRepliesByCommentId(articleId);
+        List<CommentUp> commentUps = new ArrayList<>();
+        commentsToCommentUps(comments, commentUps);
+
+        // 文章回复信息
+        List<Reply> replies = new ArrayList<>();
+        for (Comment comment :
+                comments) {
+            replies.addAll(articleService.getRepliesByCommentId(comment.getCommentId()));
+        }
+        List<ReplyUp> replyUps = new ArrayList<>();
+        repliesToReplyUps(replies, replyUps);
+
+
         Map message = new LinkedHashMap();
         message.put("article", article);
-        message.put("comments", comments);
-        message.put("replies", replies);
+        message.put("accountUp", accountUp);
+        message.put("commentUps", commentUps);
+        message.put("replyUps", replyUps);
+
         return ResultGenerator.success(message);
     }
 
@@ -94,39 +116,18 @@ public class ArticleController {
     }
 
 
-    @ApiOperation(value = "查询某一用户的所有文章")
-    @GetMapping("/articlesByAuthor")
-    public Result getArticlesByAuthorId(@RequestParam(value = "authorId") String authorId)
-    {
-        List<Article> articles = articleService.getArticlesByAuthorId(authorId);
-        List<AccountUp> accountUps = new ArrayList<>();
-        for (Article article :
-                articles) {
-            Account account = accountService.getAccountByUserId(article.getAuthorId());
-            AccountInfo accountInfo = accountService.getAccountInfoByUserId(article.getAuthorId());
-            AccountUp accountUp = new AccountUp();
-            AccountUtil.upAccountUp(accountUp, account, accountInfo);
-
-            accountUps.add(accountUp);
-        }
-        Map map = new LinkedHashMap();
-        map.put("articles", articles);
-        map.put("accountUps", accountUps);
-        if (articles.size() == 0)
-            return ResultGenerator.fail("暂未发布");
-        return ResultGenerator.success(map);
-
-    }
-
-
     @ApiOperation(value = "评论文章")
     @PostMapping("/comments")
     public Result insertComment(@RequestBody Comment comment)
     {
         try
         {
+            if (comment.getTime() == null)
+                comment.setTime(new Date());
             articleService.insertComment(comment);
-            return ResultGenerator.success("评论成功！");
+            CommentUp commentUp = new CommentUp();
+            upComment(comment, commentUp);
+            return ResultGenerator.success(commentUp);
         }catch (Exception e)
         {
             return ResultGenerator.fail("评论失败！");
@@ -141,8 +142,12 @@ public class ArticleController {
     {
         try
         {
+            if (reply.getReplyTime() == null)
+                reply.setReplyTime(new Date());
             articleService.insertReply(reply);
-            return ResultGenerator.success("回复成功！");
+            ReplyUp replyUp = new ReplyUp();
+            upReplyUp(reply, replyUp);
+            return ResultGenerator.success(replyUp);
         }catch (Exception e)
         {
             return ResultGenerator.fail("回复失败！");
@@ -152,8 +157,18 @@ public class ArticleController {
     }
 
 
-    @ApiOperation(value = "根据地点、标签查询文章")
-    @GetMapping("/search/articles")
+    @ApiOperation(value = "查询某一用户的所有文章")
+    @GetMapping("/articlesByAuthor")
+    public Result getArticlesByAuthorId(@RequestParam(value = "authorId") String authorId)
+    {
+        List<Article> articles = articleService.getArticlesByAuthorId(authorId);
+        Map map = getArticlesAndAccountUps(articles);
+        return ResultGenerator.success(map);
+    }
+
+
+    @ApiOperation(value = "根据keyword查询文章")
+    @GetMapping("/articlesByKeyword")
     public Result getArticlesByKeyword(@RequestParam(value = "keyword") String keyword)
     {
         Set<Article> articles = new HashSet<>();
@@ -164,6 +179,9 @@ public class ArticleController {
             if (article != null) articles.add(article);
         }catch (Exception e) {}
         finally {
+
+            keyword = "%" + keyword + "%";
+
             List<Article> articles1 = articleService.getArticlesByAuthorId(keyword);
             if (articles1 != null) articles.addAll(articles1);
             articles1 = articleService.getArticlesByLP(keyword);
@@ -175,12 +193,88 @@ public class ArticleController {
             articles1 = articleService.getArticlesByTag(keyword);
             if (articles1 != null) articles.addAll(articles1);
 
-            if (articles.size() == 0)
-                return ResultGenerator.fail("无此类文章！");
+            // 排序
+            List<Article> articles2 = new ArrayList<>();
+            articles2.addAll(articles);
+            Collections.sort(articles2);
 
-            return ResultGenerator.success(articles);
+
+            Map map = getArticlesAndAccountUps(articles2);
+            return ResultGenerator.success(map);
         }
     }
+
+
+    @ApiOperation(value = "根据时间查询文章")
+    @GetMapping("/articlesByTime")
+    public Result getArticlesByTime(@RequestParam(value = "time") Integer time)
+    {
+        Date date1 = null,date2 = null;
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        calendar.set(Calendar.MONTH, time - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        date1 = calendar.getTime();
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 24);
+        date2 = calendar.getTime();
+
+        List<Article> articles = articleService.getArticlesByTime(date1, date2);
+        Map map = getArticlesAndAccountUps(articles);
+
+        return ResultGenerator.success(map);
+
+    }
+
+
+
+    @ApiOperation(value = "根据标签查询文章")
+    @GetMapping("articlesByTag")
+    public Result getArticlesByTag(@RequestParam(value = "tag") String tag)
+    {
+        tag = "%" + tag + "%";
+        List<Article> articles = articleService.getArticlesByTag(tag);
+        Map map = getArticlesAndAccountUps(articles);
+        return ResultGenerator.success(map);
+    }
+
+
+    @ApiOperation(value = "根据地点查询文章")
+    @GetMapping("/articlesByPlace")
+    public Result getArticlesByPlace(@RequestParam(value = "place") String place)
+    {
+        place = "%" + place + "%";
+        Set<Article> articles = new HashSet<>();
+        List<Article> articles1 = articleService.getArticlesByLP(place);
+        articles.addAll(articles1);
+        articles1 = articleService.getArticlesBySP(place);
+        articles.addAll(articles1);
+        articles1 = articleService.getArticlesBySpotName(place);
+        articles.addAll(articles1);
+
+        articles1.clear();
+        articles1.addAll(articles);
+        Collections.sort(articles1);
+
+        Map map = getArticlesAndAccountUps(articles1);
+        return ResultGenerator.success(map);
+    }
+
+
+    @ApiOperation(value = "按照点赞量查询前4的文章")
+    @GetMapping("/articlesOrderedByLikes")
+    public Result getArticlesOrderedByLikes()
+    {
+        List<Article> articles = articleService.getArticlesOrderedByLikes();
+        return ResultGenerator.success(articles.subList(0, 4));
+    }
+
 
     // 如果数据库中没有用户输入的景点，就将景点插入数据库
     private void ensureSpotExists(Article article)
@@ -207,5 +301,79 @@ public class ArticleController {
         tag = tagService.selectTagByTagName(article.getTag3());
         if (tag == null) tagService.insertTag(new Tag(article.getTag3()));
     }
+
+
+    // 评论
+    private void upComment(Comment comment, CommentUp commentUp)
+    {
+        commentUp.setArticleId(comment.getArticleId());
+        commentUp.setAuthorId(comment.getAuthorId());
+        commentUp.setCommentId(comment.getCommentId());
+        commentUp.setContentEx(comment.getContentEx());
+        commentUp.setTime(comment.getTime());
+        AccountInfo accountInfo = accountService.getAccountInfoByUserId(comment.getAuthorId());
+        commentUp.setImagePath(accountInfo.getImagePath());
+        commentUp.setUserName(accountInfo.getUserName());
+    }
+    private void commentsToCommentUps(List<Comment> comments, List<CommentUp> commentUps)
+    {
+        for (Comment comment :
+                comments) {
+            CommentUp commentUp = new CommentUp();
+            upComment(comment, commentUp);
+            commentUps.add(commentUp);
+        }
+    }
+
+
+    // 回复
+    private void upReplyUp(Reply reply, ReplyUp replyUp)
+    {
+        replyUp.setAuthorId(reply.getAuthorId());
+        replyUp.setCommentId(reply.getCommentId());
+        replyUp.setContentEx(reply.getContentEx());
+        replyUp.setReplyId(reply.getReplyId());
+        replyUp.setToUserId(reply.getToUserId());
+        replyUp.setReplyTime(reply.getReplyTime());
+        AccountInfo accountInfo = accountService.getAccountInfoByUserId(reply.getAuthorId());
+        replyUp.setImagePath(accountInfo.getImagePath());
+        replyUp.setUserName(accountInfo.getUserName());
+    }
+    private void repliesToReplyUps(List<Reply> replies, List<ReplyUp> replyUps)
+    {
+        for (Reply reply :
+                replies) {
+            ReplyUp replyUp = new ReplyUp();
+            upReplyUp(reply, replyUp);
+            replyUps.add(replyUp);
+        }
+    }
+
+
+    // 得到作者信息
+    private AccountUp getAccountUp(String accountId)
+    {
+        Account account = accountService.getAccountByUserId(accountId);
+        AccountInfo accountInfo = accountService.getAccountInfoByUserId(accountId);
+        AccountUp accountUp = new AccountUp();
+        AccountUtil.upAccountUp(accountUp, account, accountInfo);
+        return accountUp;
+    }
+
+    // 返回文章及其对应的作者列表
+    private Map getArticlesAndAccountUps(Collection<Article> articles)
+    {
+        if (articles.size() == 0) return new HashMap();
+        Map map = new LinkedHashMap();
+        List<AccountUp> accountUps = new ArrayList<>();
+        for (Article article:
+                articles) {
+            accountUps.add(getAccountUp(article.getAuthorId()));
+        }
+        map.put("articles", articles);
+        map.put("accountUps", accountUps);
+        return map;
+    }
+
 
 }
