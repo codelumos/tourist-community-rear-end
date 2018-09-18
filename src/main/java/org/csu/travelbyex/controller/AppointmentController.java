@@ -387,6 +387,8 @@ public class AppointmentController {
     private void ensureSpotExists(Appointment appointment)
     {
         String spotName = appointment.getSpotName();
+        if (spotName == null)
+            return;
         ScenicSpot scenicSpot = spotService.getScenicSpotByName(spotName);
         if (scenicSpot == null)
         {
@@ -402,11 +404,11 @@ public class AppointmentController {
     {
 
         Tag tag = tagService.selectTagByTagName(appointment.getTag1());
-        if (tag == null) tagService.insertTag(new Tag(appointment.getTag1()));
+        if (tag == null && appointment.getTag1() != null) tagService.insertTag(new Tag(appointment.getTag1()));
         tag = tagService.selectTagByTagName(appointment.getTag2());
-        if (tag == null) tagService.insertTag(new Tag(appointment.getTag2()));
+        if (tag == null  && appointment.getTag2() != null) tagService.insertTag(new Tag(appointment.getTag2()));
         tag = tagService.selectTagByTagName(appointment.getTag3());
-        if (tag == null) tagService.insertTag(new Tag(appointment.getTag3()));
+        if (tag == null  && appointment.getTag3() != null) tagService.insertTag(new Tag(appointment.getTag3()));
     }
 
 

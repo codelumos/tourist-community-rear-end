@@ -23,11 +23,11 @@ public class ImageController {
     AccountService accountService;
 
 
-    @ApiOperation(value = "上传用户头像")
-    @PostMapping("/accountImages")
-    public Result addDish(@RequestParam("photos") MultipartFile file, @RequestParam("accountId") String accountId) throws Exception
+    @ApiOperation(value = "拼途上传图片")
+    @PostMapping("/images")
+    public Result addDish(MultipartFile file) throws Exception
     {
-        String path = "C:/Users/Stronger/Desktop/pic/213";// 文件路径
+        String path = "F:/workspace/travelByEx/static/img/";// 文件路径
         if (file!=null) {// 判断上传的文件是否为空
             String type = null;// 文件类型
             String fileName = file.getOriginalFilename();// 文件原名称
@@ -47,17 +47,15 @@ public class ImageController {
 
                         // 设置存放图片文件的路径
                     path += trueFileName;
+
+                    String savePath = "/static/img/" + trueFileName;
+
                     //System.out.println("存放图片文件的路径:"+path);
                     // 转存文件到指定的路径
                     file.transferTo(new File(path));
                     //System.out.println("文件成功上传到指定目录下");
 
-                    AccountInfo accountInfo = accountService.getAccountInfoByUserId(accountId);
-                    accountInfo.setImagePath(path);
-                    accountService.updateAccountInfo(accountInfo);
-
-
-                    return ResultGenerator.success(path);
+                    return ResultGenerator.success(savePath);
                 }else{
                     return ResultGenerator.success("不是我们想要的文件类型,请按要求重新上传");
                 }

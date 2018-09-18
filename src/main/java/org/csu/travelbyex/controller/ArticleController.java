@@ -280,6 +280,8 @@ public class ArticleController {
     private void ensureSpotExists(Article article)
     {
         String spotName = article.getSpotName();
+        if (spotName == null)
+            return;
         ScenicSpot scenicSpot = spotService.getScenicSpotByName(spotName);
         if (scenicSpot == null)
         {
@@ -293,13 +295,12 @@ public class ArticleController {
     // 如果数据库中没有用户输入的标签，就将标签插入数据库
     private void ensureTagExists(Article article)
     {
-
         Tag tag = tagService.selectTagByTagName(article.getTag1());
-        if (tag == null) tagService.insertTag(new Tag(article.getTag1()));
+        if (tag == null && article.getTag1() != null) tagService.insertTag(new Tag(article.getTag1()));
         tag = tagService.selectTagByTagName(article.getTag2());
-        if (tag == null) tagService.insertTag(new Tag(article.getTag2()));
+        if (tag == null && article.getTag2() != null) tagService.insertTag(new Tag(article.getTag2()));
         tag = tagService.selectTagByTagName(article.getTag3());
-        if (tag == null) tagService.insertTag(new Tag(article.getTag3()));
+        if (tag == null && article.getTag3() != null) tagService.insertTag(new Tag(article.getTag3()));
     }
 
 
