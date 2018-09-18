@@ -128,4 +128,15 @@ public class PlaceController {
         return ResultGenerator.success(scenicSpots);
     }
 
+
+
+
+    @ApiOperation(value = "获得所有景点")
+    @GetMapping("/allSpots")
+    public Result getAllSpots()
+    {
+        List<ScenicSpot> scenicSpots = spotService.getAllSpots();
+        return ResultGenerator.success(scenicSpots);
+    }
+
 }

@@ -116,4 +116,14 @@ public class SpotServiceImpl implements SpotService {
 
     }
 
+    @Override
+    public List getAllSpots() {
+
+        ScenicSpotExample scenicSpotExample = new ScenicSpotExample();
+        ScenicSpotExample.Criteria criteria = scenicSpotExample.createCriteria();
+        criteria.andSpotNameIsNotNull();
+        List<ScenicSpot> scenicSpots = scenicSpotMapper.selectByExampleWithBLOBs(scenicSpotExample);
+        return scenicSpots;
+    }
+
 }

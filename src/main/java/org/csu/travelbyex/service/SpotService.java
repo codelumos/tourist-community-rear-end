@@ -27,5 +27,8 @@ public interface SpotService {
 
     public void insertSpot(ScenicSpot scenicSpot);
     public List getSpotsBySpNameAndSpotName(String spName, String spotName); // 级联模糊查询
+
+
+    public List getAllSpots();
     
 }

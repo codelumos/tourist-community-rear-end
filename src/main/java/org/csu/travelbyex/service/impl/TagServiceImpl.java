@@ -20,7 +20,7 @@ public class TagServiceImpl implements TagService {
 
         TagExample tagExample = new TagExample();
         TagExample.Criteria criteria = tagExample.createCriteria();
-        criteria.andTagNameIsNull();
+        criteria.andTagNameIsNotNull();
         return tagMapper.selectByExample(tagExample);
     }
 
