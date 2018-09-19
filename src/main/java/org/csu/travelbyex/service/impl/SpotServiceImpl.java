@@ -8,6 +8,7 @@ import org.csu.travelbyex.service.SpotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -72,6 +73,7 @@ public class SpotServiceImpl implements SpotService {
     public List getSmallPlacesByLpNameAndSpName(String lpName, String spName) {
 
         LargePlace largePlace = getLPByName(lpName);
+        if(largePlace == null) return new ArrayList();
         SmallPlaceExample smallPlaceExample = new SmallPlaceExample();
         SmallPlaceExample.Criteria criteria = smallPlaceExample.createCriteria();
         criteria.andLpIdEqualTo(largePlace.getLpId());
@@ -108,6 +110,7 @@ public class SpotServiceImpl implements SpotService {
     public List getSpotsBySpNameAndSpotName(String spName, String spotName) {
 
         SmallPlace smallPlace = getSPByName(spName);
+        if (smallPlace == null) return new ArrayList();
         ScenicSpotExample scenicSpotExample = new ScenicSpotExample();
         ScenicSpotExample.Criteria criteria = scenicSpotExample.createCriteria();
         criteria.andPlaceIdEqualTo(smallPlace.getSpId());

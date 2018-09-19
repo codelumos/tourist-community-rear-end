@@ -277,7 +277,7 @@ public class AppointmentController {
         appointments1 = appointmentService.getAppointmentsBySpotName(placeName);
         if (appointments1 != null) appointments.addAll(appointments1);
 
-        if (appointments.size() == 0) return ResultGenerator.success(null);
+//        if (appointments.size() == 0) return ResultGenerator.success(null);
         appointments1.clear();
         appointments1.addAll(appointments);
         Collections.sort(appointments1);
