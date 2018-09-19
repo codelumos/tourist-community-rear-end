@@ -425,7 +425,7 @@ public class AppointmentController {
     // 返回拼途及其对应的作者列表
     private Map getAppointmentsAndAccountUps(Collection<Appointment> appointments)
     {
-        if (appointments.size() == 0) return new HashMap();
+//        if (appointments.size() == 0) return new HashMap();
         Map map = new LinkedHashMap();
         List<AccountUp> accountUps = new ArrayList<>();
         for (Appointment appointment:

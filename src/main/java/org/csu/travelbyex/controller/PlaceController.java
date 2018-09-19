@@ -57,10 +57,21 @@ public class PlaceController {
             }
         }
         if (largePlace == null && smallPlaces.size() == 0 && scenicSpots.size() == 0)
-            return ResultGenerator.fail("该地点信息暂未收录！");
+            return ResultGenerator.success(null);
         message.put("largePlace",largePlace);
         message.put("smallPlaces",smallPlaces);
         message.put("spots",scenicSpots);
+
+
+//        if(largePlace != null)
+//            return ResultGenerator.success(largePlace);
+//        if (smallPlaces.size() != 0)
+//            return ResultGenerator.success(smallPlaces.get(0));
+//        if (scenicSpots.size() != 0)
+//            return ResultGenerator.success(scenicSpots.get(0));
+
+
+
         return ResultGenerator.success(message);
     }
 
@@ -155,6 +166,8 @@ public class PlaceController {
     public Result getAllSpots()
     {
         List<ScenicSpot> scenicSpots = spotService.getAllSpots();
+        if (scenicSpots.size() >= 15)
+            scenicSpots = scenicSpots.subList(0,15);
         return ResultGenerator.success(scenicSpots);
     }
 

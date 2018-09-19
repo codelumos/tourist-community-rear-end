@@ -97,6 +97,10 @@ public class ArticleController {
         message.put("commentUps", commentUps);
         message.put("replyUps", replyUps);
 
+        // 浏览量加一
+        article.setReaders(article.getReaders() + 1);
+        articleService.updateArticle(article);
+
         return ResultGenerator.success(message);
     }
 
@@ -364,7 +368,7 @@ public class ArticleController {
     // 返回文章及其对应的作者列表
     private Map getArticlesAndAccountUps(Collection<Article> articles)
     {
-        if (articles.size() == 0) return new HashMap();
+//        if (articles.size() == 0) return new HashMap();
         Map map = new LinkedHashMap();
         List<AccountUp> accountUps = new ArrayList<>();
         for (Article article:

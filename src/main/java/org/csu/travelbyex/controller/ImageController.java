@@ -27,7 +27,7 @@ public class ImageController {
     @PostMapping("/images")
     public Result addDish(MultipartFile file) throws Exception
     {
-        String path = "F:/workspace/travelByEx/static/img/";// 文件路径
+        String path = "C:/Users/Stronger/Desktop/travelByEx/static/img/";// 文件路径
         if (file!=null) {// 判断上传的文件是否为空
             String type = null;// 文件类型
             String fileName = file.getOriginalFilename();// 文件原名称

@@ -32,6 +32,7 @@ public class AccountController {
             accountInfo.setUserId(account.getUserId());
             accountInfo.setUserName(account.getUserId());
             accountInfo.setDescription("这个人很懒，什么都没留下。");
+            accountInfo.setImagePath("http://img1.lotour.net/Inspiration/2017/0209/20170209174435875812648_310.jpg");
             accountService.insertAccount(account);
             accountService.insertAccountInfo(accountInfo);
             return ResultGenerator.success("注册成功！");
