@@ -42,16 +42,16 @@ public class AccountUtil {
 
     public static void upAccountUp(AccountUp accountUp, Account account, AccountInfo accountInfo)
     {
-        accountUp.setUserId(account.getUserId());
-        accountUp.setPassword(account.getPassword());
-        accountUp.setUserName(accountInfo.getUserName());
+        accountUp.setUserId(account.getUserId()==null?"":account.getUserId());
+        accountUp.setPassword(account.getPassword()==null?"":account.getPassword());
+        accountUp.setUserName(accountInfo.getUserName()==null?"":accountInfo.getUserName());
         accountUp.setBirthday(accountInfo.getBirthday());
-        accountUp.setDescription(accountInfo.getDescription());
-        accountUp.setImagePath(accountInfo.getImagePath());
-        accountUp.setSex(accountInfo.getSex());
-        accountUp.setTag1(accountInfo.getTag1());
-        accountUp.setTag2(accountInfo.getTag2());
-        accountUp.setTag3(accountInfo.getTag3());
+        accountUp.setDescription(accountInfo.getDescription()==null?"":accountInfo.getDescription());
+        accountUp.setImagePath(accountInfo.getImagePath()==null?"":accountInfo.getImagePath());
+        accountUp.setSex(accountInfo.getSex()==null?"":accountInfo.getSex());
+        accountUp.setTag1(accountInfo.getTag1()==null?"":accountInfo.getTag1());
+        accountUp.setTag2(accountInfo.getTag2()==null?"":accountInfo.getTag2());
+        accountUp.setTag3(accountInfo.getTag3()==null?"":accountInfo.getTag3());
 
         List<Integer> home = new ArrayList<>();
         List<Integer> live = new ArrayList<>();
