@@ -175,11 +175,11 @@ public class Article implements Comparable<Article> {
             Article vo = (Article) obj;
 
             // 比较主键属性的值 一致时才返回true
-            if (vo.articleId.equals(this.articleId))
-                return true;
+            return vo.articleId.equals(this.articleId);
         }
         return false;
     }
+
     @Override
     public int hashCode() {
         return articleId.hashCode();

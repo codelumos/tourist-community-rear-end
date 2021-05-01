@@ -19,14 +19,11 @@ public class TagController {
     @Autowired
     TagService tagService;
 
-
     @ApiOperation(value = "返回全部标签")
     @GetMapping("/allTags")
-    public Result getAllTags()
-    {
+    public Result getAllTags() {
         List<Tag> tags = tagService.getAllTags();
         return ResultGenerator.success(tags);
     }
-
 
 }

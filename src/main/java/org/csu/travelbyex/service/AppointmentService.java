@@ -9,42 +9,42 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    //约
-    public int insertAppointment(Appointment appointment);
+    // 约
+    int insertAppointment(Appointment appointment);
 
-    public void deleteAppointment(Integer appointmentId);
+    void deleteAppointment(Integer appointmentId);
 
-    public Appointment getAppointmentById(Integer appointmentId);
+    Appointment getAppointmentById(Integer appointmentId);
 
-    public List getAppointmentsByTag(String tag);
+    List getAppointmentsByTag(String tag);
 
-    public List getAllAppointments();
+    List getAllAppointments();
 
-    public List getAppointmentsByAuthorId(String authorId);
+    List getAppointmentsByAuthorId(String authorId);
 
-    public List getAppointmentByLPName(String lpName);
+    List getAppointmentByLPName(String lpName);
 
-    public List getAppointmentBySPName(String spName);
+    List getAppointmentBySPName(String spName);
 
-    public List getAppointmentByTitle(String title);
+    List getAppointmentByTitle(String title);
 
-    public List getAppointmentsBySpotName(String spotName);
+    List getAppointmentsBySpotName(String spotName);
 
-    public List getAppointmentsByTime(Date date1, Date date2);
+    List getAppointmentsByTime(Date date1, Date date2);
 
-    public List getAppointmentsByParticipantId(String participantId);
+    List getAppointmentsByParticipantId(String participantId);
 
-    public void updateAppointmentById(Appointment appointment);
+    void updateAppointmentById(Appointment appointment);
 
-    //回复
-    public void insertAppointmentReply(AppointmentReply appointmentReply);
+    // 回复
+    void insertAppointmentReply(AppointmentReply appointmentReply);
 
-    public List getAppointmentRepliesByAppointmentId(Integer appointmentId);
+    List getAppointmentRepliesByAppointmentId(Integer appointmentId);
 
-    //队友信息
-    public void insertAppointmentParticipant(AppointmentParticipant appointmentParticipant);
+    // 队友信息
+    void insertAppointmentParticipant(AppointmentParticipant appointmentParticipant);
 
-    public List getAppointmentParticipantsByAppointmentId(Integer appointmentId);
+    List getAppointmentParticipantsByAppointmentId(Integer appointmentId);
 
-    public void deleteAppointmentParticipant(AppointmentParticipant appointmentParticipant);
+    void deleteAppointmentParticipant(AppointmentParticipant appointmentParticipant);
 }

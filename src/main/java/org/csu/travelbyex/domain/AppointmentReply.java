@@ -2,7 +2,7 @@ package org.csu.travelbyex.domain;
 
 import java.util.Date;
 
-public class AppointmentReply implements Comparable<AppointmentReply>{
+public class AppointmentReply implements Comparable<AppointmentReply> {
     private Integer replyId;
 
     private Integer appointmentId;

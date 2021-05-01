@@ -9,42 +9,42 @@ import java.util.List;
 
 public interface ArticleService {
 
-    //插入文章
-    public Integer insertArticle(Article article);
+    // 插入文章
+    Integer insertArticle(Article article);
 
-    //查询
-    public List getArticlesByAuthorId(String authorId);
+    // 查询
+    List getArticlesByAuthorId(String authorId);
 
-    public List getArticlesByLP(String largePlace);
+    List getArticlesByLP(String largePlace);
 
-    public List getArticlesBySP(String smallPlace);
+    List getArticlesBySP(String smallPlace);
 
-    public List getArticlesBySpotName(String spotName);
+    List getArticlesBySpotName(String spotName);
 
-    public List getArticlesByTag(String tag);
+    List getArticlesByTag(String tag);
 
-    public List getArticlesByTags(List tags);
+    List getArticlesByTags(List tags);
 
-    public Article getArticleById(Integer articleId);
+    Article getArticleById(Integer articleId);
 
-    public List getArticlesByTime(Date date1,Date date2);
+    List getArticlesByTime(Date date1, Date date2);
 
-    public List getArticlesOrderedByLikes();
+    List getArticlesOrderedByLikes();
 
-    //修改
-    public void updateArticle(Article article);
+    // 修改
+    void updateArticle(Article article);
 
-    //删除
-    public void deleteArticleById(Integer articleId);
+    // 删除
+    void deleteArticleById(Integer articleId);
 
-    //评论
-    public void insertComment(Comment comment);
+    // 评论
+    void insertComment(Comment comment);
 
-    public List getCommentsByArticleId(Integer articleId);
+    List getCommentsByArticleId(Integer articleId);
 
-    //回复
-    public void insertReply(Reply reply);
+    // 回复
+    void insertReply(Reply reply);
 
-    public List getRepliesByCommentId(Integer commentId);
+    List getRepliesByCommentId(Integer commentId);
 
 }

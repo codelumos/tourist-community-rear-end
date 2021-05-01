@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface TagService {
 
-    public List getAllTags();
+    List getAllTags();
 
-    public void insertTag(Tag tag);
+    void insertTag(Tag tag);
 
-    public Tag selectTagByTagName(String tagName);
+    Tag selectTagByTagName(String tagName);
 
 }

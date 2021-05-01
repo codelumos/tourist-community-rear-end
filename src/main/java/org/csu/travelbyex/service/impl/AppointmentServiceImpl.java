@@ -20,20 +20,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     AppointmentReplyMapper appointmentReplyMapper;
 
-    //约
+    // 约
     @Override
-    public int insertAppointment(Appointment appointment){
+    public int insertAppointment(Appointment appointment) {
         appointmentMapper.insert(appointment);
         return appointment.getAppointmentId();
     }
 
     @Override
-    public void deleteAppointment(Integer appointmentId){
+    public void deleteAppointment(Integer appointmentId) {
         deleteAppointmentRepliesAndAppointmentParticipants(appointmentId);
         appointmentMapper.deleteByPrimaryKey(appointmentId);
     }
-    private void deleteAppointmentRepliesAndAppointmentParticipants(Integer appointmentId)
-    {
+
+    private void deleteAppointmentRepliesAndAppointmentParticipants(Integer appointmentId) {
         AppointmentReplyExample appointmentReplyExample = new AppointmentReplyExample();
         appointmentReplyExample.createCriteria().andAppointmentIdEqualTo(appointmentId);
         appointmentReplyMapper.deleteByExample(appointmentReplyExample);
@@ -62,13 +62,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         criteria = appointmentExample.createCriteria();
         criteria.andTimeGreaterThanOrEqualTo(new Date());
         criteria.andTag2Like(tag);
-        appointments.addAll( appointmentMapper.selectByExampleWithBLOBs(appointmentExample) );
+        appointments.addAll(appointmentMapper.selectByExampleWithBLOBs(appointmentExample));
 
         appointmentExample.clear();
         criteria = appointmentExample.createCriteria();
         criteria.andTimeGreaterThanOrEqualTo(new Date());
         criteria.andTag3Like(tag);
-        appointments.addAll( appointmentMapper.selectByExampleWithBLOBs(appointmentExample) );
+        appointments.addAll(appointmentMapper.selectByExampleWithBLOBs(appointmentExample));
 
         // 去重
         Set<Appointment> appointments1 = new HashSet<>();
@@ -82,7 +82,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List getAllAppointments(){
+    public List getAllAppointments() {
         AppointmentExample appointmentExample = new AppointmentExample();
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
         criteria.andTimeGreaterThanOrEqualTo(new Date());
@@ -92,7 +92,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List getAppointmentsByAuthorId(String authorId){
+    public List getAppointmentsByAuthorId(String authorId) {
         AppointmentExample appointmentExample = new AppointmentExample();
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
         criteria.andTimeGreaterThanOrEqualTo(new Date());
@@ -136,7 +136,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List getAppointmentsBySpotName(String spotName){
+    public List getAppointmentsBySpotName(String spotName) {
         AppointmentExample appointmentExample = new AppointmentExample();
         AppointmentExample.Criteria criteria = appointmentExample.createCriteria();
         criteria.andSpotNameLike(spotName);
@@ -184,14 +184,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
 
-    //回复
+    // 回复
     @Override
-    public void insertAppointmentReply(AppointmentReply appointmentReply){
+    public void insertAppointmentReply(AppointmentReply appointmentReply) {
         appointmentReplyMapper.insert(appointmentReply);
     }
 
     @Override
-    public List getAppointmentRepliesByAppointmentId(Integer appointmentId){
+    public List getAppointmentRepliesByAppointmentId(Integer appointmentId) {
         AppointmentReplyExample appointmentReplyExample = new AppointmentReplyExample();
         AppointmentReplyExample.Criteria criteria = appointmentReplyExample.createCriteria();
         criteria.andAppointmentIdEqualTo(appointmentId);
@@ -200,14 +200,14 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentReplies;
     }
 
-    //队友信息
+    // 队友信息
     @Override
-    public void insertAppointmentParticipant(AppointmentParticipant appointmentParticipant){
+    public void insertAppointmentParticipant(AppointmentParticipant appointmentParticipant) {
         appointmentParticipantMapper.insert(appointmentParticipant);
     }
 
     @Override
-    public List getAppointmentParticipantsByAppointmentId(Integer appointmentId){
+    public List getAppointmentParticipantsByAppointmentId(Integer appointmentId) {
         AppointmentParticipantExample appointmentParticipantExample = new AppointmentParticipantExample();
         AppointmentParticipantExample.Criteria criteria = appointmentParticipantExample.createCriteria();
         criteria.andAppointmentIdEqualTo(appointmentId);
@@ -218,6 +218,5 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void deleteAppointmentParticipant(AppointmentParticipant appointmentParticipant) {
         appointmentParticipantMapper.deleteByPrimaryKey(appointmentParticipant.getUserId(), appointmentParticipant.getAppointmentId());
     }
-
 
 }

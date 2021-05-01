@@ -1,24 +1,14 @@
 package org.csu.travelbyex.persistence;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+import org.csu.travelbyex.domain.ScenicSpot;
+import org.csu.travelbyex.domain.ScenicSpotExample;
+import org.csu.travelbyex.domain.ScenicSpotExample.Criteria;
+import org.csu.travelbyex.domain.ScenicSpotExample.Criterion;
 
 import java.util.List;
 import java.util.Map;
-import org.csu.travelbyex.domain.ScenicSpot;
-import org.csu.travelbyex.domain.ScenicSpotExample.Criteria;
-import org.csu.travelbyex.domain.ScenicSpotExample.Criterion;
-import org.csu.travelbyex.domain.ScenicSpotExample;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class ScenicSpotSqlProvider {
 
@@ -40,55 +30,55 @@ public class ScenicSpotSqlProvider {
     public String insertSelective(ScenicSpot record) {
         BEGIN();
         INSERT_INTO("scenic_spot");
-        
+
         if (record.getSpotId() != null) {
             VALUES("spot_id", "#{spotId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getPlaceId() != null) {
             VALUES("place_id", "#{placeId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getSpotName() != null) {
             VALUES("spot_name", "#{spotName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath1() != null) {
             VALUES("image_path_1", "#{imagePath1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath2() != null) {
             VALUES("image_path_2", "#{imagePath2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath3() != null) {
             VALUES("image_path_3", "#{imagePath3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag1() != null) {
             VALUES("tag_1", "#{tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             VALUES("tag_2", "#{tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             VALUES("tag_3", "#{tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag4() != null) {
             VALUES("tag_4", "#{tag4,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag5() != null) {
             VALUES("tag_5", "#{tag5,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             VALUES("description", "#{description,jdbcType=LONGVARCHAR}");
         }
-        
+
         return SQL();
     }
 
@@ -112,11 +102,11 @@ public class ScenicSpotSqlProvider {
         SELECT("description");
         FROM("scenic_spot");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
@@ -139,69 +129,69 @@ public class ScenicSpotSqlProvider {
         SELECT("tag_5");
         FROM("scenic_spot");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         ScenicSpot record = (ScenicSpot) parameter.get("record");
         ScenicSpotExample example = (ScenicSpotExample) parameter.get("example");
-        
+
         BEGIN();
         UPDATE("scenic_spot");
-        
+
         if (record.getSpotId() != null) {
             SET("spot_id = #{record.spotId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getPlaceId() != null) {
             SET("place_id = #{record.placeId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getSpotName() != null) {
             SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath1() != null) {
             SET("image_path_1 = #{record.imagePath1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath2() != null) {
             SET("image_path_2 = #{record.imagePath2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath3() != null) {
             SET("image_path_3 = #{record.imagePath3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag1() != null) {
             SET("tag_1 = #{record.tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             SET("tag_2 = #{record.tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             SET("tag_3 = #{record.tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag4() != null) {
             SET("tag_4 = #{record.tag4,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag5() != null) {
             SET("tag_5 = #{record.tag5,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             SET("description = #{record.description,jdbcType=LONGVARCHAR}");
         }
-        
+
         applyWhere(example, true);
         return SQL();
     }
@@ -209,7 +199,7 @@ public class ScenicSpotSqlProvider {
     public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("scenic_spot");
-        
+
         SET("spot_id = #{record.spotId,jdbcType=INTEGER}");
         SET("place_id = #{record.placeId,jdbcType=INTEGER}");
         SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
@@ -222,7 +212,7 @@ public class ScenicSpotSqlProvider {
         SET("tag_4 = #{record.tag4,jdbcType=VARCHAR}");
         SET("tag_5 = #{record.tag5,jdbcType=VARCHAR}");
         SET("description = #{record.description,jdbcType=LONGVARCHAR}");
-        
+
         ScenicSpotExample example = (ScenicSpotExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -231,7 +221,7 @@ public class ScenicSpotSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("scenic_spot");
-        
+
         SET("spot_id = #{record.spotId,jdbcType=INTEGER}");
         SET("place_id = #{record.placeId,jdbcType=INTEGER}");
         SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
@@ -243,7 +233,7 @@ public class ScenicSpotSqlProvider {
         SET("tag_3 = #{record.tag3,jdbcType=VARCHAR}");
         SET("tag_4 = #{record.tag4,jdbcType=VARCHAR}");
         SET("tag_5 = #{record.tag5,jdbcType=VARCHAR}");
-        
+
         ScenicSpotExample example = (ScenicSpotExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -252,53 +242,53 @@ public class ScenicSpotSqlProvider {
     public String updateByPrimaryKeySelective(ScenicSpot record) {
         BEGIN();
         UPDATE("scenic_spot");
-        
+
         if (record.getPlaceId() != null) {
             SET("place_id = #{placeId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getSpotName() != null) {
             SET("spot_name = #{spotName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath1() != null) {
             SET("image_path_1 = #{imagePath1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath2() != null) {
             SET("image_path_2 = #{imagePath2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath3() != null) {
             SET("image_path_3 = #{imagePath3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag1() != null) {
             SET("tag_1 = #{tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             SET("tag_2 = #{tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             SET("tag_3 = #{tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag4() != null) {
             SET("tag_4 = #{tag4,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag5() != null) {
             SET("tag_5 = #{tag5,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             SET("description = #{description,jdbcType=LONGVARCHAR}");
         }
-        
+
         WHERE("spot_id = #{spotId,jdbcType=INTEGER}");
-        
+
         return SQL();
     }
 
@@ -306,7 +296,7 @@ public class ScenicSpotSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -328,7 +318,7 @@ public class ScenicSpotSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -340,7 +330,7 @@ public class ScenicSpotSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -351,14 +341,14 @@ public class ScenicSpotSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -389,7 +379,7 @@ public class ScenicSpotSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

@@ -1,24 +1,14 @@
 package org.csu.travelbyex.persistence;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+import org.csu.travelbyex.domain.AppointmentParticipant;
+import org.csu.travelbyex.domain.AppointmentParticipantExample;
+import org.csu.travelbyex.domain.AppointmentParticipantExample.Criteria;
+import org.csu.travelbyex.domain.AppointmentParticipantExample.Criterion;
 
 import java.util.List;
 import java.util.Map;
-import org.csu.travelbyex.domain.AppointmentParticipant;
-import org.csu.travelbyex.domain.AppointmentParticipantExample.Criteria;
-import org.csu.travelbyex.domain.AppointmentParticipantExample.Criterion;
-import org.csu.travelbyex.domain.AppointmentParticipantExample;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class AppointmentParticipantSqlProvider {
 
@@ -40,15 +30,15 @@ public class AppointmentParticipantSqlProvider {
     public String insertSelective(AppointmentParticipant record) {
         BEGIN();
         INSERT_INTO("appointment_participant");
-        
+
         if (record.getUserId() != null) {
             VALUES("user_id", "#{userId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getAppointmentId() != null) {
             VALUES("appointment_id", "#{appointmentId,jdbcType=INTEGER}");
         }
-        
+
         return SQL();
     }
 
@@ -62,29 +52,29 @@ public class AppointmentParticipantSqlProvider {
         SELECT("appointment_id");
         FROM("appointment_participant");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         AppointmentParticipant record = (AppointmentParticipant) parameter.get("record");
         AppointmentParticipantExample example = (AppointmentParticipantExample) parameter.get("example");
-        
+
         BEGIN();
         UPDATE("appointment_participant");
-        
+
         if (record.getUserId() != null) {
             SET("user_id = #{record.userId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getAppointmentId() != null) {
             SET("appointment_id = #{record.appointmentId,jdbcType=INTEGER}");
         }
-        
+
         applyWhere(example, true);
         return SQL();
     }
@@ -92,10 +82,10 @@ public class AppointmentParticipantSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("appointment_participant");
-        
+
         SET("user_id = #{record.userId,jdbcType=VARCHAR}");
         SET("appointment_id = #{record.appointmentId,jdbcType=INTEGER}");
-        
+
         AppointmentParticipantExample example = (AppointmentParticipantExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -105,7 +95,7 @@ public class AppointmentParticipantSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -127,7 +117,7 @@ public class AppointmentParticipantSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -139,7 +129,7 @@ public class AppointmentParticipantSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -150,14 +140,14 @@ public class AppointmentParticipantSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -188,7 +178,7 @@ public class AppointmentParticipantSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

@@ -1,24 +1,14 @@
 package org.csu.travelbyex.persistence;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+import org.csu.travelbyex.domain.Appointment;
+import org.csu.travelbyex.domain.AppointmentExample;
+import org.csu.travelbyex.domain.AppointmentExample.Criteria;
+import org.csu.travelbyex.domain.AppointmentExample.Criterion;
 
 import java.util.List;
 import java.util.Map;
-import org.csu.travelbyex.domain.Appointment;
-import org.csu.travelbyex.domain.AppointmentExample.Criteria;
-import org.csu.travelbyex.domain.AppointmentExample.Criterion;
-import org.csu.travelbyex.domain.AppointmentExample;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class AppointmentSqlProvider {
 
@@ -40,55 +30,55 @@ public class AppointmentSqlProvider {
     public String insertSelective(Appointment record) {
         BEGIN();
         INSERT_INTO("appointment");
-        
+
         if (record.getAuthorId() != null) {
             VALUES("author_id", "#{authorId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLp() != null) {
             VALUES("lp", "#{lp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSp() != null) {
             VALUES("sp", "#{sp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSpotName() != null) {
             VALUES("spot_name", "#{spotName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTime() != null) {
             VALUES("time", "#{time,jdbcType=DATE}");
         }
-        
+
         if (record.getImagePath() != null) {
             VALUES("image_path", "#{imagePath,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSum() != null) {
             VALUES("sum", "#{sum,jdbcType=SMALLINT}");
         }
-        
+
         if (record.getTitle() != null) {
             VALUES("title", "#{title,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag1() != null) {
             VALUES("tag_1", "#{tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             VALUES("tag_2", "#{tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             VALUES("tag_3", "#{tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getContentEx() != null) {
             VALUES("content_ex", "#{contentEx,jdbcType=LONGVARCHAR}");
         }
-        
+
         return SQL();
     }
 
@@ -113,11 +103,11 @@ public class AppointmentSqlProvider {
         SELECT("content_ex");
         FROM("appointment");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
@@ -141,73 +131,73 @@ public class AppointmentSqlProvider {
         SELECT("tag_3");
         FROM("appointment");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         Appointment record = (Appointment) parameter.get("record");
         AppointmentExample example = (AppointmentExample) parameter.get("example");
-        
+
         BEGIN();
         UPDATE("appointment");
-        
+
         if (record.getAppointmentId() != null) {
             SET("appointment_id = #{record.appointmentId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getAuthorId() != null) {
             SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLp() != null) {
             SET("lp = #{record.lp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSp() != null) {
             SET("sp = #{record.sp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSpotName() != null) {
             SET("spot_name = #{record.spotName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTime() != null) {
             SET("time = #{record.time,jdbcType=DATE}");
         }
-        
+
         if (record.getImagePath() != null) {
             SET("image_path = #{record.imagePath,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSum() != null) {
             SET("sum = #{record.sum,jdbcType=SMALLINT}");
         }
-        
+
         if (record.getTitle() != null) {
             SET("title = #{record.title,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag1() != null) {
             SET("tag_1 = #{record.tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             SET("tag_2 = #{record.tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             SET("tag_3 = #{record.tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getContentEx() != null) {
             SET("content_ex = #{record.contentEx,jdbcType=LONGVARCHAR}");
         }
-        
+
         applyWhere(example, true);
         return SQL();
     }
@@ -215,7 +205,7 @@ public class AppointmentSqlProvider {
     public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("appointment");
-        
+
         SET("appointment_id = #{record.appointmentId,jdbcType=INTEGER}");
         SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         SET("lp = #{record.lp,jdbcType=VARCHAR}");
@@ -229,7 +219,7 @@ public class AppointmentSqlProvider {
         SET("tag_2 = #{record.tag2,jdbcType=VARCHAR}");
         SET("tag_3 = #{record.tag3,jdbcType=VARCHAR}");
         SET("content_ex = #{record.contentEx,jdbcType=LONGVARCHAR}");
-        
+
         AppointmentExample example = (AppointmentExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -238,7 +228,7 @@ public class AppointmentSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("appointment");
-        
+
         SET("appointment_id = #{record.appointmentId,jdbcType=INTEGER}");
         SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         SET("lp = #{record.lp,jdbcType=VARCHAR}");
@@ -251,7 +241,7 @@ public class AppointmentSqlProvider {
         SET("tag_1 = #{record.tag1,jdbcType=VARCHAR}");
         SET("tag_2 = #{record.tag2,jdbcType=VARCHAR}");
         SET("tag_3 = #{record.tag3,jdbcType=VARCHAR}");
-        
+
         AppointmentExample example = (AppointmentExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -260,57 +250,57 @@ public class AppointmentSqlProvider {
     public String updateByPrimaryKeySelective(Appointment record) {
         BEGIN();
         UPDATE("appointment");
-        
+
         if (record.getAuthorId() != null) {
             SET("author_id = #{authorId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLp() != null) {
             SET("lp = #{lp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSp() != null) {
             SET("sp = #{sp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSpotName() != null) {
             SET("spot_name = #{spotName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTime() != null) {
             SET("time = #{time,jdbcType=DATE}");
         }
-        
+
         if (record.getImagePath() != null) {
             SET("image_path = #{imagePath,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSum() != null) {
             SET("sum = #{sum,jdbcType=SMALLINT}");
         }
-        
+
         if (record.getTitle() != null) {
             SET("title = #{title,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag1() != null) {
             SET("tag_1 = #{tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             SET("tag_2 = #{tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             SET("tag_3 = #{tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getContentEx() != null) {
             SET("content_ex = #{contentEx,jdbcType=LONGVARCHAR}");
         }
-        
+
         WHERE("appointment_id = #{appointmentId,jdbcType=INTEGER}");
-        
+
         return SQL();
     }
 
@@ -318,7 +308,7 @@ public class AppointmentSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -340,7 +330,7 @@ public class AppointmentSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -352,7 +342,7 @@ public class AppointmentSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -363,14 +353,14 @@ public class AppointmentSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -401,7 +391,7 @@ public class AppointmentSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

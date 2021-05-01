@@ -1,24 +1,14 @@
 package org.csu.travelbyex.persistence;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+import org.csu.travelbyex.domain.AccountInfo;
+import org.csu.travelbyex.domain.AccountInfoExample;
+import org.csu.travelbyex.domain.AccountInfoExample.Criteria;
+import org.csu.travelbyex.domain.AccountInfoExample.Criterion;
 
 import java.util.List;
 import java.util.Map;
-import org.csu.travelbyex.domain.AccountInfo;
-import org.csu.travelbyex.domain.AccountInfoExample.Criteria;
-import org.csu.travelbyex.domain.AccountInfoExample.Criterion;
-import org.csu.travelbyex.domain.AccountInfoExample;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class AccountInfoSqlProvider {
 
@@ -40,59 +30,59 @@ public class AccountInfoSqlProvider {
     public String insertSelective(AccountInfo record) {
         BEGIN();
         INSERT_INTO("account_info");
-        
+
         if (record.getUserId() != null) {
             VALUES("user_id", "#{userId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUserName() != null) {
             VALUES("user_name", "#{userName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath() != null) {
             VALUES("image_path", "#{imagePath,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSex() != null) {
             VALUES("sex", "#{sex,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getHomelp() != null) {
             VALUES("homeLP", "#{homelp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getHomesp() != null) {
             VALUES("homeSP", "#{homesp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLivelp() != null) {
             VALUES("liveLP", "#{livelp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLivesp() != null) {
             VALUES("liveSP", "#{livesp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getBirthday() != null) {
             VALUES("birthday", "#{birthday,jdbcType=DATE}");
         }
-        
+
         if (record.getTag1() != null) {
             VALUES("tag1", "#{tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             VALUES("tag2", "#{tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             VALUES("tag3", "#{tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             VALUES("description", "#{description,jdbcType=LONGVARCHAR}");
         }
-        
+
         return SQL();
     }
 
@@ -117,11 +107,11 @@ public class AccountInfoSqlProvider {
         SELECT("description");
         FROM("account_info");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
@@ -145,73 +135,73 @@ public class AccountInfoSqlProvider {
         SELECT("tag3");
         FROM("account_info");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         AccountInfo record = (AccountInfo) parameter.get("record");
         AccountInfoExample example = (AccountInfoExample) parameter.get("example");
-        
+
         BEGIN();
         UPDATE("account_info");
-        
+
         if (record.getUserId() != null) {
             SET("user_id = #{record.userId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getUserName() != null) {
             SET("user_name = #{record.userName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath() != null) {
             SET("image_path = #{record.imagePath,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSex() != null) {
             SET("sex = #{record.sex,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getHomelp() != null) {
             SET("homeLP = #{record.homelp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getHomesp() != null) {
             SET("homeSP = #{record.homesp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLivelp() != null) {
             SET("liveLP = #{record.livelp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLivesp() != null) {
             SET("liveSP = #{record.livesp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getBirthday() != null) {
             SET("birthday = #{record.birthday,jdbcType=DATE}");
         }
-        
+
         if (record.getTag1() != null) {
             SET("tag1 = #{record.tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             SET("tag2 = #{record.tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             SET("tag3 = #{record.tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             SET("description = #{record.description,jdbcType=LONGVARCHAR}");
         }
-        
+
         applyWhere(example, true);
         return SQL();
     }
@@ -219,7 +209,7 @@ public class AccountInfoSqlProvider {
     public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("account_info");
-        
+
         SET("user_id = #{record.userId,jdbcType=VARCHAR}");
         SET("user_name = #{record.userName,jdbcType=VARCHAR}");
         SET("image_path = #{record.imagePath,jdbcType=VARCHAR}");
@@ -233,7 +223,7 @@ public class AccountInfoSqlProvider {
         SET("tag2 = #{record.tag2,jdbcType=VARCHAR}");
         SET("tag3 = #{record.tag3,jdbcType=VARCHAR}");
         SET("description = #{record.description,jdbcType=LONGVARCHAR}");
-        
+
         AccountInfoExample example = (AccountInfoExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -242,7 +232,7 @@ public class AccountInfoSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("account_info");
-        
+
         SET("user_id = #{record.userId,jdbcType=VARCHAR}");
         SET("user_name = #{record.userName,jdbcType=VARCHAR}");
         SET("image_path = #{record.imagePath,jdbcType=VARCHAR}");
@@ -255,7 +245,7 @@ public class AccountInfoSqlProvider {
         SET("tag1 = #{record.tag1,jdbcType=VARCHAR}");
         SET("tag2 = #{record.tag2,jdbcType=VARCHAR}");
         SET("tag3 = #{record.tag3,jdbcType=VARCHAR}");
-        
+
         AccountInfoExample example = (AccountInfoExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -264,57 +254,57 @@ public class AccountInfoSqlProvider {
     public String updateByPrimaryKeySelective(AccountInfo record) {
         BEGIN();
         UPDATE("account_info");
-        
+
         if (record.getUserName() != null) {
             SET("user_name = #{userName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getImagePath() != null) {
             SET("image_path = #{imagePath,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getSex() != null) {
             SET("sex = #{sex,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getHomelp() != null) {
             SET("homeLP = #{homelp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getHomesp() != null) {
             SET("homeSP = #{homesp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLivelp() != null) {
             SET("liveLP = #{livelp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getLivesp() != null) {
             SET("liveSP = #{livesp,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getBirthday() != null) {
             SET("birthday = #{birthday,jdbcType=DATE}");
         }
-        
+
         if (record.getTag1() != null) {
             SET("tag1 = #{tag1,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag2() != null) {
             SET("tag2 = #{tag2,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTag3() != null) {
             SET("tag3 = #{tag3,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getDescription() != null) {
             SET("description = #{description,jdbcType=LONGVARCHAR}");
         }
-        
+
         WHERE("user_id = #{userId,jdbcType=VARCHAR}");
-        
+
         return SQL();
     }
 
@@ -322,7 +312,7 @@ public class AccountInfoSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -344,7 +334,7 @@ public class AccountInfoSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -356,7 +346,7 @@ public class AccountInfoSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -367,14 +357,14 @@ public class AccountInfoSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -405,7 +395,7 @@ public class AccountInfoSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

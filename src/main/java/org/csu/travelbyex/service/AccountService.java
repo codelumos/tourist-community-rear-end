@@ -5,23 +5,22 @@ import org.csu.travelbyex.domain.AccountInfo;
 
 public interface AccountService {
 
-    public Account getAccountByUserId(String userId);
+    Account getAccountByUserId(String userId);
 
-    public Account getAccountByUserIdAndPassword(String userId, String password);
+    Account getAccountByUserIdAndPassword(String userId, String password);
 
-    public void insertAccount(Account account);
+    void insertAccount(Account account);
 
-    public void updateAccount(Account account);
+    void updateAccount(Account account);
 
-    public void deleteAccountByUserId(String userId);
+    void deleteAccountByUserId(String userId);
 
+    AccountInfo getAccountInfoByUserId(String userId);
 
-    public AccountInfo getAccountInfoByUserId(String userId);
+    void insertAccountInfo(AccountInfo account);
 
-    public void insertAccountInfo(AccountInfo account);
+    void updateAccountInfo(AccountInfo accountInfo);
 
-    public void updateAccountInfo(AccountInfo accountInfo);
-
-    public void deleteAccountInfoByUserId(String userId);
+    void deleteAccountInfoByUserId(String userId);
 
 }

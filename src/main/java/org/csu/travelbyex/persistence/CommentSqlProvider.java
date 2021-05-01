@@ -1,24 +1,14 @@
 package org.csu.travelbyex.persistence;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+import org.csu.travelbyex.domain.Comment;
+import org.csu.travelbyex.domain.CommentExample;
+import org.csu.travelbyex.domain.CommentExample.Criteria;
+import org.csu.travelbyex.domain.CommentExample.Criterion;
 
 import java.util.List;
 import java.util.Map;
-import org.csu.travelbyex.domain.Comment;
-import org.csu.travelbyex.domain.CommentExample.Criteria;
-import org.csu.travelbyex.domain.CommentExample.Criterion;
-import org.csu.travelbyex.domain.CommentExample;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class CommentSqlProvider {
 
@@ -40,23 +30,23 @@ public class CommentSqlProvider {
     public String insertSelective(Comment record) {
         BEGIN();
         INSERT_INTO("comment_ex");
-        
+
         if (record.getArticleId() != null) {
             VALUES("article_id", "#{articleId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getAuthorId() != null) {
             VALUES("author_id", "#{authorId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTime() != null) {
             VALUES("time", "#{time,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getContentEx() != null) {
             VALUES("content_ex", "#{contentEx,jdbcType=LONGVARCHAR}");
         }
-        
+
         return SQL();
     }
 
@@ -73,11 +63,11 @@ public class CommentSqlProvider {
         SELECT("content_ex");
         FROM("comment_ex");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
@@ -93,41 +83,41 @@ public class CommentSqlProvider {
         SELECT("time");
         FROM("comment_ex");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         Comment record = (Comment) parameter.get("record");
         CommentExample example = (CommentExample) parameter.get("example");
-        
+
         BEGIN();
         UPDATE("comment_ex");
-        
+
         if (record.getCommentId() != null) {
             SET("comment_id = #{record.commentId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getArticleId() != null) {
             SET("article_id = #{record.articleId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getAuthorId() != null) {
             SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTime() != null) {
             SET("time = #{record.time,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getContentEx() != null) {
             SET("content_ex = #{record.contentEx,jdbcType=LONGVARCHAR}");
         }
-        
+
         applyWhere(example, true);
         return SQL();
     }
@@ -135,13 +125,13 @@ public class CommentSqlProvider {
     public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("comment_ex");
-        
+
         SET("comment_id = #{record.commentId,jdbcType=INTEGER}");
         SET("article_id = #{record.articleId,jdbcType=INTEGER}");
         SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         SET("time = #{record.time,jdbcType=TIMESTAMP}");
         SET("content_ex = #{record.contentEx,jdbcType=LONGVARCHAR}");
-        
+
         CommentExample example = (CommentExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -150,12 +140,12 @@ public class CommentSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("comment_ex");
-        
+
         SET("comment_id = #{record.commentId,jdbcType=INTEGER}");
         SET("article_id = #{record.articleId,jdbcType=INTEGER}");
         SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         SET("time = #{record.time,jdbcType=TIMESTAMP}");
-        
+
         CommentExample example = (CommentExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -164,25 +154,25 @@ public class CommentSqlProvider {
     public String updateByPrimaryKeySelective(Comment record) {
         BEGIN();
         UPDATE("comment_ex");
-        
+
         if (record.getArticleId() != null) {
             SET("article_id = #{articleId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getAuthorId() != null) {
             SET("author_id = #{authorId,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getTime() != null) {
             SET("time = #{time,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getContentEx() != null) {
             SET("content_ex = #{contentEx,jdbcType=LONGVARCHAR}");
         }
-        
+
         WHERE("comment_id = #{commentId,jdbcType=INTEGER}");
-        
+
         return SQL();
     }
 
@@ -190,7 +180,7 @@ public class CommentSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -212,7 +202,7 @@ public class CommentSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -224,7 +214,7 @@ public class CommentSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -235,14 +225,14 @@ public class CommentSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -273,7 +263,7 @@ public class CommentSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

@@ -8,27 +8,31 @@ import java.util.List;
 
 public interface SpotService {
 
-    //大地点
-    public LargePlace getLPByName(String lpName);
-    public List getLPs(Boolean inHome);  //国内外
+    // 大地点
+    LargePlace getLPByName(String lpName);
 
-    public List getLPsByName(String lpName); // 模糊查询
+    List getLPs(Boolean inHome);  // 国内外
 
-    //小地点
-    public SmallPlace getSPByName(String spName);
-    public List getSPsByLPid(Integer lpId);
+    List getLPsByName(String lpName); // 模糊查询
 
-    public List getSmallPlacesByLpNameAndSpName(String lpName, String spName); // 级联模糊查询
+    // 小地点
+    SmallPlace getSPByName(String spName);
 
+    List getSPsByLPid(Integer lpId);
 
-    //景点
-    public ScenicSpot getScenicSpotByName(String spotName);
-    public List getScenicSpotsBySPid(Integer spId);
-
-    public void insertSpot(ScenicSpot scenicSpot);
-    public List getSpotsBySpNameAndSpotName(String spName, String spotName); // 级联模糊查询
+    List getSmallPlacesByLpNameAndSpName(String lpName, String spName); // 级联模糊查询
 
 
-    public List getAllSpots();
-    
+    // 景点
+    ScenicSpot getScenicSpotByName(String spotName);
+
+    List getScenicSpotsBySPid(Integer spId);
+
+    void insertSpot(ScenicSpot scenicSpot);
+
+    List getSpotsBySpNameAndSpotName(String spName, String spotName); // 级联模糊查询
+
+
+    List getAllSpots();
+
 }

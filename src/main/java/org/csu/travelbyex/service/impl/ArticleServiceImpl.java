@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class ArticleServiceImpl implements ArticleService{
+public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     ArticleMapper articleMapper;
@@ -20,16 +20,16 @@ public class ArticleServiceImpl implements ArticleService{
     @Autowired
     CommentMapper commentMapper;
 
-    //插入文章
+    // 插入文章
     @Override
-    public Integer insertArticle(Article article){
+    public Integer insertArticle(Article article) {
         articleMapper.insert(article);
         return article.getArticleId();
     }
 
-    //查询
+    // 查询
     @Override
-    public List getArticlesByAuthorId(String authorId){
+    public List getArticlesByAuthorId(String authorId) {
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
         criteria.andAuthorIdLike(authorId);
@@ -39,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public List getArticlesByLP(String largePlace){
+    public List getArticlesByLP(String largePlace) {
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
         criteria.andLpLike(largePlace);
@@ -49,7 +49,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public List getArticlesBySP(String smallPlace){
+    public List getArticlesBySP(String smallPlace) {
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
         criteria.andSpLike(smallPlace);
@@ -59,7 +59,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public List getArticlesBySpotName(String spotName){
+    public List getArticlesBySpotName(String spotName) {
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
         criteria.andSpotNameLike(spotName);
@@ -69,24 +69,24 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public List getArticlesByTag(String tag){
+    public List getArticlesByTag(String tag) {
 
         List<Article> articles = new ArrayList<>();
 
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
         criteria.andTag1Like(tag);
-        articles.addAll( articleMapper.selectByExampleWithBLOBs(articleExample) );
+        articles.addAll(articleMapper.selectByExampleWithBLOBs(articleExample));
 
         articleExample.clear();
         criteria = articleExample.createCriteria();
         criteria.andTag2Like(tag);
-        articles.addAll( articleMapper.selectByExampleWithBLOBs(articleExample) );
+        articles.addAll(articleMapper.selectByExampleWithBLOBs(articleExample));
 
         articleExample.clear();
         criteria = articleExample.createCriteria();
         criteria.andTag3Like(tag);
-        articles.addAll( articleMapper.selectByExampleWithBLOBs(articleExample) );
+        articles.addAll(articleMapper.selectByExampleWithBLOBs(articleExample));
 
         // 去重，防止一篇文章三个标签相同被搜索多遍
         Set<Article> articles1 = new HashSet<>();
@@ -99,7 +99,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public List getArticlesByTags(List tags){
+    public List getArticlesByTags(List tags) {
         ArticleExample articleExample = new ArticleExample();
         ArticleExample.Criteria criteria = articleExample.createCriteria();
         criteria.andTag1In(tags);
@@ -108,12 +108,12 @@ public class ArticleServiceImpl implements ArticleService{
         articleExample.clear();
         criteria = articleExample.createCriteria();
         criteria.andTag2In(tags);
-        articles.addAll( articleMapper.selectByExampleWithBLOBs(articleExample) );
+        articles.addAll(articleMapper.selectByExampleWithBLOBs(articleExample));
 
         articleExample.clear();
         criteria = articleExample.createCriteria();
         criteria.andTag3In(tags);
-        articles.addAll( articleMapper.selectByExampleWithBLOBs(articleExample) );
+        articles.addAll(articleMapper.selectByExampleWithBLOBs(articleExample));
 
         // 去重，防止一篇文章三个标签相同被搜索多遍
         Set<Article> articles1 = new HashSet<>();
@@ -126,7 +126,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Article getArticleById(Integer articleId){
+    public Article getArticleById(Integer articleId) {
         return articleMapper.selectByPrimaryKey(articleId);
     }
 
@@ -152,25 +152,25 @@ public class ArticleServiceImpl implements ArticleService{
 
     //修改
     @Override
-    public void updateArticle(Article article){
+    public void updateArticle(Article article) {
         articleMapper.updateByPrimaryKey(article);
     }
 
-    //删除
+    // 删除
     @Override
-    public void deleteArticleById(Integer articleId){
+    public void deleteArticleById(Integer articleId) {
         articleMapper.deleteByPrimaryKey(articleId);
     }
 
 
-    //评论
+    // 评论
     @Override
-    public void insertComment(Comment comment){
+    public void insertComment(Comment comment) {
         commentMapper.insert(comment);
     }
 
     @Override
-    public List getCommentsByArticleId(Integer articleId){
+    public List getCommentsByArticleId(Integer articleId) {
 
         CommentExample commentExample = new CommentExample();
         CommentExample.Criteria criteria = commentExample.createCriteria();
@@ -181,19 +181,19 @@ public class ArticleServiceImpl implements ArticleService{
 
     }
 
-    //回复
+    // 回复
     @Override
-    public void insertReply(Reply reply){
+    public void insertReply(Reply reply) {
         replyMapper.insert(reply);
     }
 
     @Override
-    public List getRepliesByCommentId(Integer commentId){
+    public List getRepliesByCommentId(Integer commentId) {
 
         ReplyExample replyExample = new ReplyExample();
         ReplyExample.Criteria criteria = replyExample.createCriteria();
         criteria.andCommentIdEqualTo(commentId);
-        List<Reply> replies = replyMapper.selectByExampleWithBLOBs(replyExample);;
+        List<Reply> replies = replyMapper.selectByExampleWithBLOBs(replyExample);
         Collections.sort(replies);
         return replies;
     }

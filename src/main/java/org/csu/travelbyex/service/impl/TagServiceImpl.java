@@ -16,7 +16,7 @@ public class TagServiceImpl implements TagService {
     TagMapper tagMapper;
 
     @Override
-    public List getAllTags(){
+    public List getAllTags() {
 
         TagExample tagExample = new TagExample();
         TagExample.Criteria criteria = tagExample.createCriteria();
