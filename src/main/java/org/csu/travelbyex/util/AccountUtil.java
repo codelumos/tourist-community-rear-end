@@ -61,7 +61,7 @@ public class AccountUtil {
         }
 
         String livelp = accountInfo.getLivelp();
-        String[] livelps = null;
+        String[] livelps;
         if (livelp != null && livelp.length() != 2) {
             livelps = livelp.substring(1, livelp.length() - 1).split(", ");
             for (String s :
@@ -69,7 +69,6 @@ public class AccountUtil {
                 live.add(Integer.parseInt(s));
             }
         }
-
 
         accountUp.setLive(live);
         accountUp.setHome(home);

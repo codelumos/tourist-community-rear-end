@@ -46,7 +46,7 @@ CREATE TABLE `account_info` (
 
 LOCK TABLES `account_info` WRITE;
 /*!40000 ALTER TABLE `account_info` DISABLE KEYS */;
-INSERT INTO `account_info` VALUES ('huang','一把健','/static/img/黑子.jpg','山竹快快走','m','[19, 203, 1790]',NULL,'[18, 183, 1626]',NULL,'2018-09-17','蹦极','攀岩','潜泳'),('hyf','hyf','/static/img/1537364578634.jpg','这个人很懒，什么都没留下。',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),('liu','stronger','http://img1.lotour.net/Inspiration/2017/0209/20170209174435875812648_310.jpg','沉潜','m','[16, 152, 1369]',NULL,'[18, 183, 1626]',NULL,'2017-06-01','乡村','自驾游','户外'),('shi','山南有樛木','http://img1.lotour.net/Inspiration/2018/0704/20180704223131237678661_910.jpg','这个人很懒，什么都没留下。','m','[10, 85, 834]',NULL,'[18, 183, 1626]',NULL,'2018-09-17','蹦极','攀岩','潜泳'),('zhang','月关','http://img1.lotour.net/Inspiration/2018/0704/20180704223131237678661_910.jpg','好的文章如一幅画，在画里面，你能看到','m','[19, 216, 1859]',NULL,'[18, 183, 1626]',NULL,'1998-09-17','蹦极','攀岩','潜泳');
+INSERT INTO `account_info` VALUES ('shi','山南有樛木','\\static\\img\\head.jpeg','人生若只如初见','m','[10, 85, 834]',NULL,'[18, 183, 1626]',NULL,'2018-09-17','蹦极','攀岩','潜泳'),('huang','一把健','\\static\\img\\head.jpeg','山竹快快走','m','[19, 203, 1790]',NULL,'[18, 183, 1626]',NULL,'2018-09-17','蹦极','攀岩','潜泳'),('liu','stronger','\\static\\img\\head.jpeg','沉潜','m','[16, 152, 1369]',NULL,'[18, 183, 1626]',NULL,'2017-06-01','乡村','自驾游','户外'),('zhang','月关','\\static\\img\\head.jpeg','好的文章如一幅画，在画里面，你能看到','m','[19, 216, 1859]',NULL,'[18, 183, 1626]',NULL,'1998-09-17','蹦极','攀岩','潜泳');
 /*!40000 ALTER TABLE `account_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

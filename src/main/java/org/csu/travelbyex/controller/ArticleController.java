@@ -38,7 +38,7 @@ public class ArticleController {
             ensureSpotExists(article);
             ensureTagExists(article);
             if (article.getCoverPath() == null || article.getCoverPath().equals(""))
-                article.setCoverPath("http://img1.lotour.net/Inspiration/2018/0802/20180802160830772838853_1920.jpg");
+                article.setCoverPath("..\\..\\..\\..\\static\\img\\sea.jpg");
 
             int articleId = articleService.insertArticle(article);
             return ResultGenerator.success(articleId);

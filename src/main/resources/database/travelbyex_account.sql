@@ -35,7 +35,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES ('huang','huang'),('hyf','hyf'),('liu','liu'),('shi','shi'),('zhang','zhang');
+INSERT INTO `account` VALUES ('shi','shi'),('huang','huang'),('liu','liu'),('zhang','zhang');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

@@ -28,8 +28,8 @@ public class Swagger2 {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("travelByEx的API文档 ")
-                .description("项目地址：https://github.com/Excalibur-CSU")
-                .termsOfServiceUrl("https://github.com/Excalibur-CSU")
+                .description("项目地址：https://github.com/HaoNShi/tourist-community-rear-end")
+                .termsOfServiceUrl("https://github.com/HaoNShi/tourist-community-rear-end")
                 .version("1.0")
                 .build();
     }

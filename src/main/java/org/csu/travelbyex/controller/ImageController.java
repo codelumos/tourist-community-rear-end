@@ -24,11 +24,10 @@ public class ImageController {
     @ApiOperation(value = "拼途上传图片")
     @PostMapping("/images")
     public Result addDish(MultipartFile file) throws Exception {
-        String path = "C:/Users/Stronger/Desktop/travelByEx/static/img/";// 文件路径
+        String path = "\\static\\img\\";// 文件路径
         if (file != null) {// 判断上传的文件是否为空
             String type = null;// 文件类型
             String fileName = file.getOriginalFilename();// 文件原名称
-
             // 判断文件类型
             type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1) : null;
             if (type != null) {// 判断文件类型是否为空
